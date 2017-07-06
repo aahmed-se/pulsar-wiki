@@ -78,6 +78,20 @@ specific target broker, the proxy will follow this process:
  have to handle that internally and only reply to client once it
  has the final response.
 
+### TLS Encryption and authentication
+
+The proxy support TLS for transport level encryption and as an
+authentication plugin just like the broker are already doing.
+
+If a client enables TLS in its configuration, all communications
+between the client and the proxy will be encrypted.
+
+The use of TLS between proxy and brokers is configured separately.
+It is therefore possible to use the proxy as a TLS frontend, handling
+the TLS termination and then forwarding the traffic to brokers in
+clear text. Also it's possible for the proxy to use TLS and then
+re-encrypt the data when talking with the server.
+
 ## Changes introduced
 
 In addition to the new proxy component, these changes are necessary

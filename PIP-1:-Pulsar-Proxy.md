@@ -2,10 +2,9 @@
 
 # PIP-1 Pulsar stateless proxy component
 
- * **Status**: Under discussion
- * **Issue**: [ ]
-
-
+ * **Status**: Implemented
+ * **Pull Request**: [#548](https://github.com/apache/incubator-pulsar/pull/548)
+ * **Mailing List discussion**: https://lists.apache.org/thread.html/66b120e0ab5a54edac23e490dcf128900605fd9216321dcc315050bf@%3Cdev.pulsar.apache.org%3E
 
 ## Motivation
 

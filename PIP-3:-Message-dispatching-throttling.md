@@ -31,8 +31,12 @@ pulsar-admin namespaces <property/cluster/namespace> set-dispatch-throttling <me
  
 ## Alternate approach:
 
-### Dispatching throttling per subscriber:
+### Dispatch throttling per subscriber:
 In above approach, broker does message dispatching throttling per namespace. However, there could be a high possibility that specific subscriber of the topic has a large backlog and over consuming bandwidth of the broker. Therefore, other topics or subscribers under the same namespace can be impacted and suffer due to namespace level throttling. In that case, we can provide an option to configure subscriber level throttling by storing subscriber configuration (under `/managed-ledger/property/cluster/ns/persistent/topic/subscriber/configuration`) into zookeeper. However, it can create an administrative complexity to manage configurations for every topic and subscriber.
+
+### Dispatch throttling per topic:
+As described in [#402](https://github.com/apache/incubator-pulsar/issues/402#issuecomment-302434483), we can define rate limiting policy that maps to the list of regex which can match to the topics for which we want to define throttling. This approach can give more granular control by throttling on topic level. However, on a long run it might be complex or difficult to manage rate limiting policies for large number of topics.
+
 
 ### Throttling threshold: Message-rate Vs Bytes-rate
 Broker reads data from bookkeeper and dispatches it to consumer in form of message entity. Therefore, it makes more sense to define threshold as message-rate over bytes-rate.

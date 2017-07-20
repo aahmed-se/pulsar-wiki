@@ -1,4 +1,4 @@
-# Message dispatching throttling
+# Message dispatch throttling
 
  * **Status**: Under discussion
  * **Issue**: [[402](https://github.com/apache/incubator-pulsar/issues/402)]

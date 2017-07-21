@@ -7,27 +7,31 @@
 Producers and consumers can interact with broker on high volumes of data. This can monopolize broker resources and cause network saturation, which can have adverse effects on other topics owned by that broker. Throttling based on resource consumption can protect against these issues and it can play important role for large multi-tenant clusters where a small set of clients using high volumes of data can easily degrade performance of other clients.
 ## Message throttling
 ### Consumer: 
-Throttling can be configured per namespace basis by defining message-rate threshold. Sometimes, namespace with large message backlog can continuously drain messages with multiple connected consumers, which can easily over utilize broker’s bandwidth. Each broker owns a set of bundles under a namespace and with throttling enabled, broker can control message dispatching across all the bundles under that namespace. This throttling-limit is defined on a per-broker basis so, each namespace can fetch a maximum configured messages per second per broker before it gets throttled.
+Throttling limit can be configured at namespace level by defining message-rate threshold which will apply to each of the topic under that namespace. Sometimes, namespace with large message backlog can continuously drain messages with multiple connected consumers, which can easily over utilize broker’s bandwidth. Therefore, we can configure message-rate for that namespace which will enforce configured message-rate to all the topics under that namespace and each topic under that namespace can dispatch a maximum configured messages per second before it gets throttled by broker.
 
-By default, broker does not throttle message dispatching for any namespace unless broker is configured with default throttling-limit or namespace has been configured as a part of namespace policy in a cluster. We can configure throttling limit for a specific namespace using an admin-api.
+By default, broker does not throttle message dispatching for any namespace unless cluster is configured with default throttling-limit or namespace has been configured as a part of namespace policy in a cluster. We can configure throttling limit for a specific namespace using an admin-api.
+
 ### Producer: 
 Broker already has capability to throttle number of publish messages by reading only fixed number of in flight messages per client connection, which can protect broker if client tries to publish significantly large number of messages.
 
-## Broker throttling configuration
-By default, broker does not throttle message dispatching for any of the topics. However, if we want to uniformly distribute broker’s resources across all the namespaces then, we can configure `dispatchingMessageRatePerNamespace` and start broker with configured throttling-limit, which will apply to all broker owned namespaces. However, namespace with already configured throttling will override broker’s default limit while dispatching the message.
+## Cluster throttling configuration
+By default, broker does not throttle message dispatching for any of the topics. However, if we want to uniformly distribute broker’s resources across all the topics then, we can configure default message-rate at cluster level and it will be effective immediately after configuring it . This default message-rate configured in a cluster will apply to all the topics of all the brokers serving in that cluster. However, namespace with already configured throttling will override cluster’s default limit while dispatching messages for all the topics under that namespace.
 
-Following [broker-configuration](https://github.com/apache/incubator-pulsar/blob/master/conf/broker.conf) forces broker to apply throttling-limit 1000 to each namespace. By default, value of this configuration is -1 which disables throttling in broker.
+Following configuration sets default dispatching throttling-limit 1000 for every topic in the cluster. By default, value of this configuration is -1 which disables default throttling in all the brokers of that cluster.
+
 ```java
-dispatchingMessageRatePerNamespace = 1000
+pulsar-admin clusters update dispatchingMessageRate 1000
 ```
 
-## Namespace throttling configuration
-We can override broker’s default throttling-limit for a namespace if that requires setting value higher or lower than default limit. Throttling-limit for a namespace can be configured per cluster and will be immediately effective after configuring it.
 
-Following configuration sets dispatching throttling-limit of a namespace
+## Namespace throttling configuration
+We can always override the default throttling-limit for namespace topics that need a higher or lower message-rate. We can configure throttling-limit for all the topics under a specific namespace and it will be immediately effective after configuring it. Also, throttling-limit for a namespace topics will be configured per cluster that gives flexibility to configure specific message-rate for the namespace in each cluster.
+
+Following configuration sets dispatching throttling-limit for all the topics under that namespace.
 ```
 pulsar-admin namespaces <property/cluster/namespace> set-dispatch-throttling <message-rate-threshold>
 ```
+
  
 ## Alternate approach:
 

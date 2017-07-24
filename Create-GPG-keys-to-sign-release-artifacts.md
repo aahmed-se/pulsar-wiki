@@ -54,3 +54,10 @@ cd pulsar-dist-release
 # Commit to SVN
 svn ci -m "Added gpg key for $USER"
 ```
+
+#### Upload the key to a public key server
+
+Use the key id to publish it to a public key server:
+```shell
+gpg --send-key 8C75C738C33372AE198FD10CC238A8CAAC055FD2
+```

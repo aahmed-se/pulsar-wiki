@@ -65,7 +65,7 @@ git tag -u $USER@apache.org v1.X.0-incubating-candidate-0 -m 'Release v1.X.0-inc
 
 # Push both the branch and the tag to Github repo
 git push origin branch-1.X
-git push origin v1.X.0-incubating
+git push origin v1.X.0-incubating-candidate-0
 ```
 
 #### 3. Download and inspect the artifacts

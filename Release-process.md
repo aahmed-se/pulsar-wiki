@@ -90,6 +90,10 @@ wget https://github.com/apache/incubator-pulsar/releases/download/v1.X.0-incubat
 Inspect the artifacts:
  * Unpack both of them
  * Check that the `LICENSE` and `NOTICE` files cover all included jars (especially for the -bin package)
+ * Run Apache RAT to verify the license headers in the `src` package:
+ ```shell
+ mvn apache-rat:check
+ ```
  * Check that the standalone Pulsar service starts correctly:
  ```shell
  bin/pulsar standalone

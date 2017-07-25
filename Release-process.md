@@ -171,6 +171,12 @@ Please download the the source package, and follow the README to build
 and run the Pulsar standalone service.
 ```
 
+The vote should be open for at least 72 hours (3 days). Votes from Pulsar PPMC members
+will be considered binding, while anyone else is encouraged to verify the release and
+vote as well.
+
+If the release is approved here, we can then proceed to next step.
+
 #### 8. Run the vote on Incubator
 
 Since Pulsar is an incubator project, the release must be approved by the ASF Incubator PMC.
@@ -183,6 +189,9 @@ To: general@incubator.apache.org
 Subject: [VOTE] Pulsar 1.X.0-incubating Release Candidate 0
 ....
 ```
+
+As before, the vote should be open for at least 72 hours and it should get at least 3 binding +1s
+from Incubator PMC members.
 
 If the outcome is successful, we can continue on the next step, otherwise we'll fix the issues
 and restart from step 2, this time issuing a `1.X.0-incubating-candidate-1` release.

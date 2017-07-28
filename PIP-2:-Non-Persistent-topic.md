@@ -25,7 +25,7 @@ However, if message has been dropped by a broker then broker can notify producer
 Therefore, broker can send special message-id when it drops the message and client library can follow first option, where it ignores the message-drop and does not notify producer with publish failure.
  
 Number of in-flight messages per connection can be configured at [broker-config](https://github.com/apache/incubator-pulsar/blob/master/conf/broker.conf):
-```
+```properties
 # Max concurrent non-persistent message can be processed per connection
 maxConcurrentNonPersistentMessagePerConnection=1000
 ```
@@ -42,7 +42,7 @@ Broker delivers message to consumer only if the consumer has enough permit to co
 ### Broker isolation to serve only non-persistent topic
 
 Sometimes, there would be a need to configure few dedicated brokers in a cluster, to just serve non-persistent topics. With the help of below configurations, only brokers that have non-persistent topic mode enabled will load and serve non-persistent topics.
-```
+```properties
 # It disables broker to load persistent topics
 enablePersistentTopics=false
 # It enables broker to load non-persistent topics

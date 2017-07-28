@@ -1,7 +1,8 @@
 # Non-Persistent topic
 
- * **Status**: Under discussion
- * **Issue**: [[451](https://github.com/apache/incubator-pulsar/issues/451)]
+ * **Status**: Implemented
+ * **Pull Request**: [#538](https://github.com/apache/incubator-pulsar/pull/538)
+* **Feature**: Experimental
 
 ## Introduction
  
@@ -14,9 +15,7 @@ Broker identifies topic type based on topic-name prefix eg: `persistent` , `non-
  
 Non-persistent topics may consume higher network bandwidth of broker compare to persistent topic. Therefore, there should be a way in broker to control and balance out broker’s system-resources among all the topics.
  
-### Broker configuration:
- 
-**Per topic throttling**
+### Per topic throttling
 
 Sometimes, continuous stream of published messages from one topic may over utilize broker’s network-bandwidth or CPU, which may impact performance of other topics owned by that broker. Therefore, broker should be able to throttle number of in flight messages per connection So, if producer tries to publish messages higher than configured rate, then broker silently drops those new incoming messages by sending success ack to the publisher and not delivering them to the subscribers.
 However, if message has been dropped by a broker then broker can notify producer by sending special message-id (`ledgerId=-1, entryId=-1`) or flag (`msgDropped`)  in `sendReceipt` ack command. Client library can handle msg-drop indication in two ways:
@@ -31,7 +30,16 @@ Number of in-flight messages per connection can be configured at [broker-config]
 maxConcurrentNonPersistentMessagePerConnection=1000
 ```
 
-**Broker isolation to serve only non-persistent topic**
+### Message drop at broker
+ 
+* **On message publish**
+Broker allows only fixed number of inflight messages per connection and it throttles all other messages by dropping and not delivering them to any subscribers. This publish message-drop can be monitored using `admin-stats` api.
+ 
+* **On message dispatching**
+Broker delivers message to consumer only if the consumer has enough permit to consume message and consumer TCP channel is writable, otherwise broker drops the message without delivering it to the consumer and this message-drop rate can we monitored using `admin-stats` api. **NOTE: Therefore, consumer’s receiver queue size (to accommodate enough permits) and TCP-receiver window size (to keep channel writable) should be configured properly to avoid message drop while dispatching it.**
+
+
+### Broker isolation to serve only non-persistent topic
 
 Sometimes, there would be a need to configure few dedicated brokers in a cluster, to just serve non-persistent topics. With the help of below configurations, only brokers that have non-persistent topic mode enabled will load and serve non-persistent topics.
 ```

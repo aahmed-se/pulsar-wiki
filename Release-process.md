@@ -11,7 +11,7 @@ Instructions are at [Create GPG keys to sign release artifacts](https://github.c
 The steps for releasing are as follows:
 1. Create release branch
 2. Update project version and tag
-3. Download and inspect the artifacts
+3. Build and inspect the artifacts
 4. Inspect the artifacts
 5. Stage artifacts in maven
 6. Write release notes
@@ -39,8 +39,12 @@ would keep using the old `branch-1.19`.
 In these instructions, I'm referring to an fictitious release `1.X.0-incubating`. Change the release version in the examples
 accordingly with the real version.
 
+It is recommended to create a fresh clone of the repository to avoid any local files to interfere
+in the process:
+
 ```shell
-git fetch origin
+git clone git@github.com:apache/incubator-pulsar.git
+cd incubator-pulsar
 git checkout -b branch-1.X origin/master
 ```
 
@@ -58,7 +62,7 @@ be the final one.
 mvn versions:set -DnewVersion=1.X.0-incubating
 
 # Commit
-git commit -m 'Release 1.X.0-incubating'
+git commit -m 'Release 1.X.0-incubating' -a
 
 # Create a "candidate" tag
 git tag -u $USER@apache.org v1.X.0-incubating-candidate-0 -m 'Release v1.X.0-incubating-candidate-0'
@@ -68,24 +72,19 @@ git push origin branch-1.X
 git push origin v1.X.0-incubating-candidate-0
 ```
 
-#### 3. Download and inspect the artifacts
+#### 3. Build and inspect the artifacts
 
-After having pushed the tag to the repository. The CI build should have built
-and published the artifacts in a Github release, marked as "pre-release".
-
-Check the CI build (look for the tag name, not the build on just the branch name)
-at https://travis-ci.org/apache/incubator-pulsar/.
-
-If the build passed, it should have created the release item at:
-https://github.com/apache/incubator-pulsar/releases
-
-Download both the `apache-pulsar-1.X.0-src.tgz` and `apache-pulsar-1.X.0-bin.tgz`.
+Perform the build in a Linux machine (that's because the build is compiling some C source files
+for the `pulsar-checksum` module).
 
 ```shell
-wget https://github.com/apache/incubator-pulsar/releases/download/v1.X.0-incubating/apache-pulsar-1.X.0-incubating-src.tar.gz
-
-wget https://github.com/apache/incubator-pulsar/releases/download/v1.X.0-incubating/apache-pulsar-1.X.0-incubating-bin.tar.gz
+mvn install
 ```
+
+After the build, there will be 2 generated artifacts:
+
+ * `all/target/apache-pulsar-1.X.0-incubating-bin.tar.gz`
+ * `all/target/apache-pulsar-1.X.0-incubating-src.tar.gz`
 
 Inspect the artifacts:
  * Unpack both of them
@@ -125,8 +124,27 @@ svn ci -m 'Staging artifacts and signature for Pulsar release 1.X.0-incubating'
 
 #### 5. Stage artifacts in maven
 
-TODO: This is pending on setting up the account in Nexus. See JIRA at
-https://issues.apache.org/jira/browse/INFRA-14694
+Upload the artifacts to ASF Nexus:
+
+```shell
+export APACHE_USER=$USER
+export APACHE_PASSWORD=$MY_PASSWORD
+mvn deploy -DskipTests -Papache-release --settings .travis/settings.xml
+```
+
+This will ask for the GPG key passphrase and then upload to the staging repository.
+
+Login to ASF Nexus repository at https://repository.apache.org
+
+Click on "Staging Repositories" on the left sidebar and then select the current
+Pulsar staging repo. This should be called something like `orgapachepulsar-XYZ`.
+
+Use the "Close" button to close the repository. This operation will take few
+minutes. Once complete click "Refresh" and now a link to the staging repository
+should be available, something like
+https://repository.apache.org/content/repositories/orgapachepulsar-XYZ
+
+
 
 #### 6. Write release notes
 

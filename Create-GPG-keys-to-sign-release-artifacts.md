@@ -29,7 +29,7 @@ one for proper releases and one for the release candidates.
 The credentials for SVN are the usual Apache account credentials.
 
 ```shell
-# Checkout the SNV folder containing the KEYS file
+# Checkout the SVN folder containing the KEYS file
 svn co https://dist.apache.org/repos/dist/dev/incubator/pulsar pulsar-dist-dev
 cd pulsar-dist-dev
 

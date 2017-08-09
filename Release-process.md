@@ -247,7 +247,7 @@ Copy the `latest` documentation into a version specific folder.
 ```shell
 git checkout -b asf-site origin/asf-site
 cd content/docs
-cp -ar latest v1.X.0-incubating
+cp -r latest v1.X.0-incubating
 git add v1.X.0-incubating
 git ci -a -m 'Copying generated documenation for v1.X.0-incubating'
 git push origin asf-site
@@ -259,10 +259,10 @@ In `site/_config.yml` :
 
 ```yaml
 # ...
-versions:
-    - 1.18
+current_version: 1.X.0-incubating
+archived_releases:
     - 1.19.0-incubating
-latest: 1.19.0-incubating
+
 # ...
 ```
 

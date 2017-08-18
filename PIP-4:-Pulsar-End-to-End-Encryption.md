@@ -17,6 +17,7 @@ Many systems use Pulsar to move messages between system components. Many of thes
 
 ## Design
 ### Producer
+
 The Pulsar client is modified so that a producer object may have one or more keys bound to it. At a minimum, the API will require a key name, the key content, and the key type (for future extensibility).
  * The user should be able to dynamically alter the set of bound keys.
  * If a producer has keys associated with it, before sending a message it will,
@@ -35,17 +36,20 @@ The Pulsar client is modified so that a consumer object may have one or more key
 ### Encrypting messages produced by Pulsar client:
 
 1. Generating keys
-    1. Generate rsa key pair using openssl.<br>`E.g: openssl genrsa -out testkey.pem 2048`
-    1. Write private key in pkcs8 format.<br>`E.g: openssl pkcs8 -topk8 -inform PEM -outform PEM -in testkey.pem -out test_privkey.pem -nocrypt`
-    1. Write public key in pkcs8 format.<br>`E.g: openssl rsa -in test_privkey.pem -pubout -outform pkcs8 -out test_pubkey.pem`
-    1. Store the public and private key into a file or keystore. The key management and distribution is outside the scope of Pulsar.
+<br>Generate public/private key pair and store them in a file or keystore. The key management and distribution is outside the scope of Pulsar.
+    * **Generating ECDSA key pair**
+       1. `openssl ecparam -name secp521r1 -genkey -param_enc explicit -out test_rsa_privkey.pem`
+       1. `openssl req -new -x509 -key test_rsa_privkey.pem -out test_rsa_pubkey.pem -days 365`
+    * **Generating RSA key pair**
+       1. `openssl genrsa -out test_ecdsa_privkey.pem 2048`
+       1. `openssl rsa -in test_ecdsa_privkey.pem -pubout -outform pkcs8 -out test_ecdsa_pubkey.pem`
 1. Distribute the public keys to producer hosts and private keys to consumer hosts. Make sure the process has access to retrieve the key from the keystore.
 1. Add keys to the ProducerConfiguration:
     1. Create ProducerConfiguration:<br>`ProducerConfiguration conf = new ProducerConfiguration()`
     1. Add key to the config:<br>`conf.addEncryptionKey(“pub-key-name”)`
 <br>In some cases, the producer may want to encrypt the session key using multiple key individually and have them published with the corresponding key name in the message. Call `conf.addEncryptionKey(“pub-key-name”)` with the keyname to add them to the producer config. Consumer will be able to decrypt the message, as long as it has access to at least one of the keys.
-1. Implement the callback which will be invoked by Pulsar client to load the key. Make sure not to perform any blocking operation within the callback, as it will block producer creation. The reason to get the key value using callback is to allow the producer to dynamically refresh the key when it expires. 
-<br>`byte[] getEncryptionKey(String keyName)`
+1. Implement CryptoKeyReader::getKey() interface which will be invoked by Pulsar client to load the key. Make sure not to perform any blocking operation within the callback, as it will block producer creation. The reason to get the key value using callback is to allow the producer to dynamically refresh the key when it expires. 
+<br>`byte[] getKey(String keyName)`
 1. Create producer with the producer config. During the creation, the client will invoke the callback method for each key added to the producer config. Failing to retrieve a key will result in InvalidCryptoKeyException
 <br>`PulsarClient client = PulsarClient.create("pulsar://localhost:6650");`
 <br>`Producer producer = client.createProducer("persistent://property/cluster/ns/topic", conf);`
@@ -60,8 +64,8 @@ The Pulsar client is modified so that a consumer object may have one or more key
 1. Create consumer and implement callback to retrieve key:
     1. Create ConsumerConfiguration:
 <br>`ConsumerConfiguration conf = new ConsumerConfiguration()`
-1. Implement the callback which will be invoked by Pulsar client to load the key when a key appears in a message. When one or more key appears in the message, Pulsar client assumes that the message is encrypted. Make sure not to perform any blocking operation within the callback, as it will block receive().
-<br>`byte[] getEncryptionKey(String keyName)`
+1. Implement CryptoKeyReader::getKey() interface which will be invoked by Pulsar client to load the key when a key appears in a message. When one or more key appears in the message, Pulsar client assumes that the message is encrypted. Make sure not to perform any blocking operation within the callback, as it will block receive().
+<br>`byte[] getKey(String keyName)`
 1. Create consumer with the consumer config
 <br>`PulsarClient client = PulsarClient.create("pulsar://localhost:6650");`
 <br>`Consumer consumer = client.subscribe("persistent://property/cluster/ns/topic", "subscription-name", conf);`
@@ -72,7 +76,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
 
 ### Handling symmetric and asymmetric keys
  * **Asymmetric encryption:**
-By default Pulsar supports asymmetric key encryption using RSA keypair, as a result there is no need to share the secret with everyone. The public key is used by the producers to encrypt and produce the message. Only the person with the private key(in this case the consumer) will be able to decrypt the message.
+By default Pulsar supports asymmetric key encryption for data key using ECDSA/RSA keypair, as a result there is no need to share the secret with everyone. The public key is used by the producers to encrypt and produce the data key. Only the person with the private key(in this case the consumer) will be able to decrypt the symmetric key which is used to decrypt the message.
  * **Symmetric encryption:**
 Pulsar does not support symmetric key encryption at the moment.
 
@@ -81,8 +85,8 @@ Pulsar does not support symmetric key encryption at the moment.
     1. If key is revoked/invalidated, application should call conf.removeEncryptionKey(“key-name”) to prevent any producer from using it and recreate the producer.
     1. If consumer does not find the key corresponding to the one mentioned in the message, it would invoke the callback to refresh it. If it fails to get a valid key, decryption fails with exception. Consumer will attempt to do this for every message received.
 1. If a key is refreshed
-    1. Though it’s not recommended to modify an existing key, if a key needs to be refreshed, application should delete old producer object and create a new one. As long as the new value is returned when getEncryptionKey() is called, producer will use the refreshed key to encrypt the message.
-    1. If consumer is already connected and processing messages, it does not refresh the key until it notices the session key change. Upon receiving updated session key,  consumer will call getEncryptionKey() to refresh the key. If decryption fails even with the refreshed key, receive() will fail with InvalidCryptoKeyException.
+    1. Though it’s not recommended to modify an existing key, if a key needs to be refreshed, application should delete old producer object and create a new one. As long as the new value is returned when getKey() is called, producer will use the refreshed key to encrypt the message.
+    1. If consumer is already connected and processing messages, it does not refresh the key until it notices the session key change. Upon receiving updated session key,  consumer will call getKey() to refresh the key. If decryption fails even with the refreshed key, receive() will fail with InvalidCryptoKeyException.
     1. If a new consumer is connected which only has access to the refreshed key, and incoming messages contains messages encrypted with old session as well as new session key, consumer won’t be able to decrypt older messages. Clients can set consumer configuration to control the behavior at this point.
 
 ## Supported Cipher suites:
@@ -103,7 +107,7 @@ AES-256-GCM
 ### Consumer:
 1. InvalidCryptoKeyException - Decryption key not found
 1. CryptoException - Key is provided, but decryption failed
-1. In some cases, consumer does not have access to the key at the time of receiving the message or client would like to receive the encrypted messages and store them for later processing. In such cases, getEncryptionKey() returns empty byte array, so consumer won’t be able to decrypt the message. Such messages are delivered as is to the application. It is the application’s responsibility to decrypt the message.
+1. In some cases, consumer does not have access to the key at the time of receiving the message or client would like to receive the encrypted messages and store them for later processing. In such cases, getKey() returns empty byte array, so consumer won’t be able to decrypt the message. Such messages are delivered as is to the application. It is the application’s responsibility to decrypt the message.
 1. Received message is not encrypted.
 By default receive() will fail with CryptoException. To ignore this failure and continue to receive messages, set <br>`conf.setAcceptNonEncryptedMessages(true)`
 1. Encrypted messages received by a client which does not support encryption.

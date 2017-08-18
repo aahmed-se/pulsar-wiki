@@ -63,7 +63,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
 1. Create consumer and implement callback to retrieve key:
     1. Create ConsumerConfiguration:
 <br>`ConsumerConfiguration conf = new ConsumerConfiguration()`
-1. Implement CryptoKeyReader::getKey() interface which will be invoked by Pulsar client to load the key when a key appears in a message. When one or more key appears in the message, Pulsar client assumes that the message is encrypted. Make sure not to perform any blocking operation within the callback, as it will block receive().
+1. Implement CryptoKeyReader::getKey() interface which will be invoked by Pulsar client to load the key when a key appears in the message. When one or more key appears in the message, Pulsar client assumes that the message is encrypted. Make sure not to perform any blocking operation within the callback, as it will block receive().
 <br>`byte[] getKey(String keyName)`
 1. Create consumer with the consumer config
 <br>`PulsarClient client = PulsarClient.create("pulsar://localhost:6650");`
@@ -75,38 +75,38 @@ The Pulsar client is modified so that a consumer object may have one or more key
 
 ### Handling symmetric and asymmetric keys
  * **Asymmetric encryption:**
-By default Pulsar supports asymmetric key encryption for session key using ECDSA/RSA keypair, as a result there is no need to share the secret with everyone. The public key is used by the producers to encrypt and produce the session key. Only the person with the private key(in this case the consumer) will be able to decrypt the symmetric key which is used to decrypt the message.
+By default Pulsar supports asymmetric key encryption using ECDSA/RSA keypair to encrypt session key, as a result there is no need to share the secret with everyone. The public key is used by the producers to encrypt and produce the session key. Only the person with the private key(in this case the consumer) will be able to decrypt the symmetric key which is used to decrypt the message.
  * **Symmetric encryption:**
-Pulsar does not support symmetric key encryption at the moment.
+Dynamically generated symmetric "AES/GCM/NoPadding" key is used to encrypt messages. However, pulsar does not support symmetric key encryption to encrypt session key.
 
 ### Revoking/ Invalidating key
 1. If a key is revoked/ invalidated
-    1. If key is revoked/invalidated, application should call conf.removeEncryptionKey(“key-name”) to prevent any producer from using it and recreate the producer.
-    1. If consumer does not find the key corresponding to the one mentioned in the message, it would invoke the callback to refresh it. If it fails to get a valid key, decryption fails with exception. Consumer will attempt to do this for every message received.
+    1. If key is revoked/invalidated, application should recreate ProducerConfiguration and Producer without the revoked key to prevent any producer from using it and recreate the producer.
+    1. If consumer does not find the key corresponding to the one mentioned in the message, it would invoke the callback to construct the private key. If it fails to get a valid key, decryption fails with exception. Consumer will attempt to do this for every message received.
 1. If a key is refreshed
     1. Though it’s not recommended to modify an existing key, if a key needs to be refreshed, application should delete old producer object and create a new one. As long as the new value is returned when getKey() is called, producer will use the refreshed key to encrypt the message.
     1. If consumer is already connected and processing messages, it does not refresh the key until it notices the session key change. Upon receiving updated session key,  consumer will call getKey() to refresh the key. If decryption fails even with the refreshed key, receive() will fail with CryptoException.
-    1. If a new consumer is connected which only has access to the refreshed key, and incoming messages contains messages encrypted with old session as well as new session key, consumer won’t be able to decrypt older messages. Clients can set consumer configuration to control the behavior at this point.
+    1. If a new consumer is connected and only has access to the refreshed key, however incoming messages contains messages encrypted with old session as well as new session key, consumer won’t be able to decrypt older messages. Clients can set consumer configuration to control the behavior at this point.
 
 ## Supported Cipher suites:
  * **Key Strength recommendation:**
-Cryptographic strength of RSA-2048 & ECDSA-
+Cryptographic strength of RSA-2048 & ECDSA-256
  * **Data encryption algorithm:**
 AES-256-GCM
 
 ## Supported Crypto Libraries:
- * **Java: SunJCE**
+ * **Java: BouncyCastle**
  * **C++: OpenSSL**
 
 ## Failures and Exceptions:
 ### Producer:
-1. CryptoException - Encryption failed
+1. CryptoException - Invalid Crypto Key, Encryption failed
 
 ### Consumer:
-1. CryptoException - Key is provided, but decryption failed
+1. CryptoException - Invalid Crypto Key, Key is provided but decryption failed
 1. In some cases, consumer does not have access to the key at the time of receiving the message or client would like to receive the encrypted messages and store them for later processing. In such cases, getKey() returns empty byte array, so consumer won’t be able to decrypt the message. Such messages are delivered as is to the application. It is the application’s responsibility to decrypt the message.
 1. Received message is not encrypted.
-By default receive() will fail with CryptoException. To ignore this failure and continue to receive messages, set <br>`conf.setAcceptNonEncryptedMessages(true)`
+Consumer will only attempt to decrypt messages which contains encryption_keys set in the message metadata. Messages without this metadata field will be delivered as is.
 1. Encrypted messages received by a client which does not support encryption.
 Earlier version of pulsar client does not even know that the message is encrypted, hence it would simply deliver the encrypted message to the consumer. So, it is upto the application to ensure that producer and consumer is configured properly with the appropriate keys and certified client version.
 
@@ -122,4 +122,4 @@ Earlier version of pulsar client does not even know that the message is encrypte
     * Key/Value pair of key name used to encrypt the session key and encrypted session key
 1. encryption_param
     * Depends upon the value of `encryption_keys`
-    * Additional inputs besides the key, required to decrypt and verify the message. For example, with aes-256-gcm, this property would contain the IV to decrypt the message and the authentication tag to verify it.
+    * Additional inputs besides the key, which is required to decrypt and verify the message. For example, with aes-256-gcm, this property would contain the IV to decrypt the message and the authentication tag to verify it.

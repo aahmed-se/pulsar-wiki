@@ -109,6 +109,7 @@ AES-256-GCM
 Consumer will only attempt to decrypt messages which contains encryption_keys set in the message metadata. Messages without this metadata field will be delivered as is.
 1. Encrypted messages received by a client which does not support encryption.
 Earlier version of pulsar client does not even know that the message is encrypted, hence it would simply deliver the encrypted message to the consumer. So, it is upto the application to ensure that producer and consumer is configured properly with the appropriate keys and certified client version.
+1. If consumption failed due to decryption failure or missing keys in consumer, application has the option to consume the encrypted message or discard it. Call `conf.setCryptoFailureAction(ConsumerCryptoFailureAction)` to control the consumer behavior. The default behavior is to fail the request.
 
 ## MessageCrypto class to perform crypto actions
 1. The key-name and key cipher are stored in an in-memory data structure. 

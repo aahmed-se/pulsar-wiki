@@ -37,11 +37,11 @@ The Pulsar client is modified so that a consumer object may have one or more key
 1. Generating keys
 <br>Generate public/private key pair and store them in a file or keystore. The key management and distribution is outside the scope of Pulsar.
     * **Generating ECDSA key pair**
-       1. `openssl ecparam -name secp521r1 -genkey -param_enc explicit -out test_rsa_privkey.pem`
-       1. `openssl req -new -x509 -key test_rsa_privkey.pem -out test_rsa_pubkey.pem -days 365`
+       1. `openssl ecparam -name secp521r1 -genkey -param_enc explicit -out test_ecdssa_privkey.pem`
+       1. `openssl req -new -x509 -key test_ecdsa_privkey.pem -out test_ecdsa_pubkey.pem -days 365`
     * **Generating RSA key pair**
-       1. `openssl genrsa -out test_ecdsa_privkey.pem 2048`
-       1. `openssl rsa -in test_ecdsa_privkey.pem -pubout -outform pkcs8 -out test_ecdsa_pubkey.pem`
+       1. `openssl genrsa -out test_rsa_privkey.pem 2048`
+       1. `openssl rsa -in test_rsa_privkey.pem -pubout -outform pkcs8 -out test_rsa_pubkey.pem`
 1. Distribute the public keys to producer hosts and private keys to consumer hosts. Make sure the process has access to retrieve the key from a file/keystore.
 1. Add keys to the ProducerConfiguration:
     1. Create ProducerConfiguration:<br>`ProducerConfiguration conf = new ProducerConfiguration()`

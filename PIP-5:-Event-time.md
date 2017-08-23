@@ -1,4 +1,5 @@
 - Status: Initial Draft
+- Author: Sijie Guo
 - Discussion Thread: N/A
 - Issue: #xxx
 

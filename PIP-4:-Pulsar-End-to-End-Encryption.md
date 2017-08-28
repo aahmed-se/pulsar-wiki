@@ -110,6 +110,7 @@ Consumer will only attempt to decrypt messages which contains encryption_keys se
 1. Encrypted messages received by a client which does not support encryption.
 Earlier version of pulsar client does not even know that the message is encrypted, hence it would simply deliver the encrypted message to the consumer. So, it is upto the application to ensure that producer and consumer is configured properly with the appropriate keys and certified client version.
 1. If consumption failed due to decryption failure or missing keys in consumer, application has the option to consume the encrypted message or discard it. Call `conf.setCryptoFailureAction(ConsumerCryptoFailureAction)` to control the consumer behavior. The default behavior is to fail the request.
+1. If decryption fails and the message contain batch messages, client will not be able to retrieve individual messages in the batch, hence message consumption fails even if `conf.setCryptoFailureAction()` is set to `CONSUME`.
 
 ## MessageCrypto class to perform crypto actions
 1. The key-name and key cipher are stored in an in-memory data structure. 

@@ -38,7 +38,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
 <br>Generate public/private key pair and store them in a file or keystore. The key management and distribution is outside the scope of Pulsar.
     * **Generating ECDSA key pair**
        1. `openssl ecparam -name secp521r1 -genkey -param_enc explicit -out test_ecdsa_privkey.pem`
-       1. `openssl req -new -x509 -key test_ecdsa_privkey.pem -out test_ecdsa_pubkey.pem -days 365`
+       1. `openssl ec -in test_ecdsa_privkey.pem -pubout -outform pkcs8 -out test_ecdsa_pubkey.pem`
     * **Generating RSA key pair**
        1. `openssl genrsa -out test_rsa_privkey.pem 2048`
        1. `openssl rsa -in test_rsa_privkey.pem -pubout -outform pkcs8 -out test_rsa_pubkey.pem`

@@ -85,6 +85,13 @@ mapping will be required.
 If the application uses the custom sequence id, we will enforce that every message will have
 to carry it.
 
+After creating a `Producer` instance, the application should also be able to recover few
+informations:
+ * `Producer.getProducerName()`: If the producer name was initially assigned from Pulsar (and not
+     chosen by the application), it can be discovered after its creation.
+ * `Producer.getLastSequenceId()`: Get the sequence id of the last message that was published by
+    this producer.
+
 ### Broker
 
 Broker needs to keep a per-topic hash-map that keeps track of the highest

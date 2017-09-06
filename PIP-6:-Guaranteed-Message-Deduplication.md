@@ -2,6 +2,7 @@
 * **Authors**: Matteo Merli, Sijie Guo
 * **Pull Request**: [ ]
 * **Mailing List discussion**: https://lists.apache.org/thread.html/58099b7c6bc10a41e575de68f45134f8668fea4baef3f3df76516aa2@%3Cdev.pulsar.apache.org%3E
+* **Tasks break down**: https://github.com/apache/incubator-pulsar/projects/3
 
 
 ## Motivation

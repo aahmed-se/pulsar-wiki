@@ -42,7 +42,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
     * **Generating RSA key pair**
        1. `openssl genrsa -out test_rsa_privkey.pem 2048`
        1. `openssl rsa -in test_rsa_privkey.pem -pubout -outform pkcs8 -out test_rsa_pubkey.pem`
-1. Distribute the public keys to producer hosts and private keys to consumer hosts. Make sure the process has access to retrieve the key from a file/keystore.
+1. Distribute the public keys to producer hosts and private keys to consumer hosts. Make sure the process has access to retrieve the key from a file/Keystore. Add prefix "public-key." against the public key name while storing it in Keystore. This prefix is used by the producer to retrieve public key through `CryptoKeyReader::getKey()` interface.  e.g: If the public key name is `pulsarkey`, then store its as `public-key.pulsarkey` in Keystore.
 1. Add keys to the ProducerConfiguration:
     1. Create ProducerConfiguration:<br>`ProducerConfiguration conf = new ProducerConfiguration()`
     1. Add key to the config:<br>`conf.addEncryptionKey(“pub-key-name”)`
@@ -63,7 +63,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
 1. Create consumer and implement callback to retrieve key:
     1. Create ConsumerConfiguration:
 <br>`ConsumerConfiguration conf = new ConsumerConfiguration()`
-1. Implement CryptoKeyReader::getKey() interface which will be invoked by Pulsar client to load the key when a key appears in the message. When one or more key appears in the message, Pulsar client assumes that the message is encrypted. Make sure not to perform any blocking operation within the callback, as it will block receive().
+1. Implement CryptoKeyReader::getKey() interface which will be invoked by Pulsar client to load the key when a key appears in the message. When one or more key appears in the message, Pulsar client assumes that the message is encrypted. Make sure not to perform any blocking operation within the callback, as it will block receive().  Add prefix "private-key." against the private key name while storing it in Keystore. This prefix is used by the consumer to retrieve private key through `CryptoKeyReader::getKey()` interface.  e.g: If the private key name is `pulsarkey`, then store its as `private-key.pulsarkey` in Keystore.
 <br>`byte[] getKey(String keyName)`
 1. Create consumer with the consumer config
 <br>`PulsarClient client = PulsarClient.create("pulsar://localhost:6650");`

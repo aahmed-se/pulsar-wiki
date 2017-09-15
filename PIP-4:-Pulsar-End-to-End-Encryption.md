@@ -101,7 +101,7 @@ AES-256-GCM
 ## Failures and Exceptions:
 ### Producer:
 1. CryptoException - Invalid Crypto Key, Encryption failed
-
+1. If encryption fails for some reason, `send()/sendAsync()` will fail indicating the cause of the failure. Application has the option to proceed with sending unencrypted message in such cases. Call `conf.setCryptoFailureAction(ProducerCryptoFailureAction)` to control the producer behavior. The default behavior is to fail the request.
 ### Consumer:
 1. CryptoException - Invalid Crypto Key, Key is provided but decryption failed
 1. In some cases, consumer does not have access to the key at the time of receiving the message or client would like to receive the encrypted messages and store them for later processing. In such cases, getPrivateKey() returns empty byte array, so consumer won’t be able to decrypt the message. Such messages are delivered as is to the application. It is the application’s responsibility to decrypt the message.

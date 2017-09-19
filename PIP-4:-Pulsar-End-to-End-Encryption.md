@@ -75,7 +75,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
 
 ### Handling symmetric and asymmetric keys
  * **Asymmetric encryption:**
-By default Pulsar supports asymmetric key encryption using ECDSA/RSA keypair to encrypt session key, as a result there is no need to share the secret with everyone. The public key is used by the producers to encrypt and produce the session key. Only the person with the private key(in this case the consumer) will be able to decrypt the symmetric key which is used to decrypt the message.
+By default Pulsar supports asymmetric key encryption using ECDSA/RSA keypair to encrypt session key, as a result there is no need to share the secret with everyone. The public key is used by the producers to encrypt session key and send it as part of message header. Only the person with the private key(in this case the consumer) will be able to decrypt the session key which is used to decrypt the message.
  * **Symmetric encryption:**
 Dynamically generated symmetric "AES/GCM/NoPadding" key is used to encrypt messages. However, pulsar does not support symmetric key encryption to encrypt session key.
 

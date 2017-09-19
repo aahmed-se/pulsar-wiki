@@ -49,7 +49,30 @@ The Pulsar client is modified so that a consumer object may have one or more key
 <br>In some cases, the producer may want to encrypt the session key using multiple key individually and have them published with the corresponding key name in the message. Call `conf.addEncryptionKey(“pub-key-name”)` with the keyname to add them to the producer config. Consumer will be able to decrypt the message, as long as it has access to at least one of the keys.
 1. Implement CryptoKeyReader::getPublicKey() interface which will be invoked by Pulsar client to load the key. Make sure not to perform any blocking operation within the callback, as it will block producer creation. The reason to get the key value using callback is to allow the producer to dynamically refresh the key when it expires. 
 <br>`byte[] getPublicKey(String keyName)`
-1. Create producer using the producer config. During the creation, the client will invoke the callback method for each key added to the producer config. Failing to retrieve a key will result in CryptoException
+1. Add CryptoKeyReader interface implementation to producer config. e.g:
+`    class EncKeyReader implements CryptoKeyReader {`
+
+        byte[] encKeyValue;
+
+        EncKeyReader(byte[] value) {
+            encKeyValue = value;
+        }
+
+        @Override
+        public byte[] getPublicKey(String keyName) {
+            return encKeyValue;
+        }
+
+        @Override
+        public byte[] getPrivateKey(String keyName) {
+            return null;
+        }
+
+   }
+
+  `EncKeyReader keyReader = new EncKeyReader(keyVal);`<br>
+  `conf.setCryptoKeyReader(keyReader);`
+6. Create producer using the producer config. During the creation, the client will invoke the callback method for each key added to the producer config. Failing to retrieve a key will result in CryptoException
 <br>`PulsarClient client = PulsarClient.create("pulsar://localhost:6650");`
 <br>`Producer producer = client.createProducer("persistent://property/cluster/ns/topic", conf);`
 <br>`producer.send(msg);`
@@ -65,7 +88,30 @@ The Pulsar client is modified so that a consumer object may have one or more key
 <br>`ConsumerConfiguration conf = new ConsumerConfiguration()`
 1. Implement CryptoKeyReader::getPrivateKey() interface which will be invoked by Pulsar client to load the key when a key appears in the message. When one or more key appears in the message, Pulsar client assumes that the message is encrypted. Make sure not to perform any blocking operation within the callback, as it will block receive(). 
 <br>`byte[] getPrivateKey(String keyName)`
-1. Create consumer with the consumer config
+1. Add CryptoKeyReader interface implementation to consumer config. e.g:
+`    class EncKeyReader implements CryptoKeyReader {`
+
+        byte[] encKeyValue;
+
+        EncKeyReader(byte[] value) {
+            encKeyValue = value;
+        }
+
+        @Override
+        public byte[] getPublicKey(String keyName) {
+            return null;
+        }
+
+        @Override
+        public byte[] getPrivateKey(String keyName) {
+            return encKeyValue;
+        }
+
+   }
+
+  `EncKeyReader keyReader = new EncKeyReader(keyVal);`<br>
+  `conf.setCryptoKeyReader(keyReader);`
+5. Create consumer with the consumer config
 <br>`PulsarClient client = PulsarClient.create("pulsar://localhost:6650");`
 <br>`Consumer consumer = client.subscribe("persistent://property/cluster/ns/topic", "subscription-name", conf);`
 <br>`Message msg = consumer.receive();`

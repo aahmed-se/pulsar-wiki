@@ -72,6 +72,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
 
   `EncKeyReader keyReader = new EncKeyReader(keyVal);`<br>
   `conf.setCryptoKeyReader(keyReader);`
+
 6. Create producer using the producer config. During the creation, the client will invoke the callback method for each key added to the producer config. Failing to retrieve a key will result in CryptoException
 <br>`PulsarClient client = PulsarClient.create("pulsar://localhost:6650");`
 <br>`Producer producer = client.createProducer("persistent://property/cluster/ns/topic", conf);`
@@ -111,6 +112,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
 
   `EncKeyReader keyReader = new EncKeyReader(keyVal);`<br>
   `conf.setCryptoKeyReader(keyReader);`
+
 5. Create consumer with the consumer config
 <br>`PulsarClient client = PulsarClient.create("pulsar://localhost:6650");`
 <br>`Consumer consumer = client.subscribe("persistent://property/cluster/ns/topic", "subscription-name", conf);`

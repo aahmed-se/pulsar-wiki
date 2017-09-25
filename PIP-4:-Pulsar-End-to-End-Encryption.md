@@ -22,7 +22,7 @@ The Pulsar client is modified so that a producer object may have one or more key
  * If a producer has keys associated with it, before sending a message it will,
     * Generate or use a session for the configured symmetric encryption function.
     * Encrypt the message body with the session key.
-    * Encrypt the session key with each bound public key and optionally generate a message digest.
+    * Encrypt the session key with each bound public key.
  * Producer should refresh the session key after N messages or every 4 hours(TBD: Make it configurable)
 ### Consumer
 The Pulsar client is modified so that a consumer object may have one or more keys bound to it for decryption. These would be the private keys corresponding to the public ones given to the producer.  The user should be able to dynamically alter the set of bound keys.

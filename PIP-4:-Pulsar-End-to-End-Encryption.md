@@ -46,7 +46,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
 1. Add keys to the ProducerConfiguration:
     1. Create ProducerConfiguration:<br>`ProducerConfiguration conf = new ProducerConfiguration()`
     1. Add key to the config:<br>`conf.addEncryptionKey(“myapp.key”)`
-<br>In some cases, the producer may want to encrypt the session key using multiple key individually and have them published with the corresponding key name in the message. Call `conf.addEncryptionKey(“my app.key”)` with the keyname to add them to the producer config. Consumer will be able to decrypt the message, as long as it has access to at least one of the keys.
+<br>In some cases, the producer may want to encrypt the session key using multiple key individually and have them published with the corresponding key name in the message. Call `conf.addEncryptionKey(“myapp.key”)` with the keyname to add them to the producer config. Consumer will be able to decrypt the message, as long as it has access to at least one of the keys.
 1. Implement CryptoKeyReader::getPublicKey() interface which will be invoked by Pulsar client to load the key. Make sure not to perform any blocking operation within the callback, as it will block producer creation. The reason to get the key value using callback is to allow the producer to dynamically refresh the key when it expires. 
 <br>`byte[] getPublicKey(String keyName)`
 1. Add CryptoKeyReader interface implementation to producer config. e.g:<br>

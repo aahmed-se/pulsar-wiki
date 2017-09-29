@@ -52,25 +52,27 @@ The Pulsar client is modified so that a consumer object may have one or more key
 1. Add CryptoKeyReader interface implementation to producer config. e.g:<br>
 `    class EncKeyReader implements CryptoKeyReader {`
 
-        byte[] encKeyValue;
+        EncryptionKeyInfo publicKeyInfo = new EncryptionKeyInfo();
+        EncryptionKeyInfo privateKeyInfo = new EncryptionKeyInfo();
 
-        EncKeyReader(byte[] value) {
-            encKeyValue = value;
+        EncKeyReader(EncryptionKeyInfo publicKeyInfo, EncryptionKeyInfo privateKeyInfo) {
+            this. publicKeyInfo = publicKeyInfo;
+            this. privateKeyInfo = privateKeyInfo;
         }
 
         @Override
-        public byte[] getPublicKey(String keyName) {
-            return encKeyValue;
+        public EncryptionKeyInfo getPublicKey(String keyName, Map<String, String> keyMeta) {
+            return this.privateKeyInfo;
         }
 
         @Override
-        public byte[] getPrivateKey(String keyName) {
+        public EncryptionKeyInfo getPrivateKey(String keyName, Map<String, String> keyMeta) {
             return null;
         }
 
    }
 
-  `EncKeyReader keyReader = new EncKeyReader(keyVal);`<br>
+  `CryptoKeyReader keyReader = new CryptoKeyReader(pubKey, privKey);`<br>
   `conf.setCryptoKeyReader(keyReader);`
 
 6. Create producer using the producer config. During the creation, the client will invoke the callback method for each key added to the producer config. Failing to retrieve a key will result in CryptoException
@@ -92,25 +94,27 @@ The Pulsar client is modified so that a consumer object may have one or more key
 1. Add CryptoKeyReader interface implementation to consumer config. e.g:<br>
 `    class EncKeyReader implements CryptoKeyReader {`
 
-        byte[] encKeyValue;
+        EncryptionKeyInfo publicKeyInfo = new EncryptionKeyInfo();
+        EncryptionKeyInfo privateKeyInfo = new EncryptionKeyInfo();
 
-        EncKeyReader(byte[] value) {
-            encKeyValue = value;
+        EncKeyReader(EncryptionKeyInfo publicKeyInfo, EncryptionKeyInfo privateKeyInfo) {
+            this. publicKeyInfo = publicKeyInfo;
+            this. privateKeyInfo = privateKeyInfo;
         }
 
         @Override
-        public byte[] getPublicKey(String keyName) {
+        public EncryptionKeyInfo getPublicKey(String keyName, Map<String, String> keyMeta) {
             return null;
         }
 
         @Override
-        public byte[] getPrivateKey(String keyName) {
-            return encKeyValue;
+        public EncryptionKeyInfo getPrivateKey(String keyName, Map<String, String> keyMeta) {
+            return this.privateKeyInfo;
         }
 
    }
 
-  `EncKeyReader keyReader = new EncKeyReader(keyVal);`<br>
+  `CryptoKeyReader keyReader = new CryptoKeyReader(pubKey, privKey);`<br>
   `conf.setCryptoKeyReader(keyReader);`
 
 5. Create consumer with the consumer config

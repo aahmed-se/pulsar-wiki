@@ -48,7 +48,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
     1. Add key to the config:<br>`conf.addEncryptionKey(“myapp.key”)`
 <br>In some cases, the producer may want to encrypt the session key using multiple key individually and have them published with the corresponding key name in the message. Call `conf.addEncryptionKey(“myapp.key”)` with the keyname to add them to the producer config. Consumer will be able to decrypt the message, as long as it has access to at least one of the keys.
 1. Implement CryptoKeyReader::getPublicKey() interface which will be invoked by Pulsar client to load the key. Make sure not to perform any blocking operation within the callback, as it will block producer creation. The reason to get the key value using callback is to allow the producer to dynamically refresh the key when it expires. 
-<br>`byte[] getPublicKey(String keyName)`
+<br>`EncryptionKeyInfo getPublicKey(String keyName, Map<String, String> keyMeta)`
 1. Add CryptoKeyReader interface implementation to producer config. e.g:<br>
 `    class EncKeyReader implements CryptoKeyReader {`
 
@@ -90,7 +90,7 @@ The Pulsar client is modified so that a consumer object may have one or more key
     1. Create ConsumerConfiguration:
 <br>`ConsumerConfiguration conf = new ConsumerConfiguration()`
 1. Implement CryptoKeyReader::getPrivateKey() interface which will be invoked by Pulsar client to load the key when a key appears in the message. When one or more key appears in the message, Pulsar client assumes that the message is encrypted. Make sure not to perform any blocking operation within the callback, as it will block receive(). 
-<br>`byte[] getPrivateKey(String keyName)`
+<br>`EncryptionKeyInfo getPrivateKey(String keyName, Map<String, String> keyMeta)`
 1. Add CryptoKeyReader interface implementation to consumer config. e.g:<br>
 `    class EncKeyReader implements CryptoKeyReader {`
 

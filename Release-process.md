@@ -14,12 +14,13 @@ The steps for releasing are as follows:
 3. Build and inspect the artifacts
 4. Inspect the artifacts
 5. Stage artifacts in maven
-6. Write release notes
-7. Run the vote
-8. Run the vote on Incubator
-9. Promote the release
-10. Update the site
-11. Announce the release
+6. Move master branch to next version
+7. Write release notes
+8. Run the vote
+9. Run the vote on Incubator
+10. Promote the release
+11. Update the site
+12. Announce the release
 
 ## Steps in detail
 
@@ -156,10 +157,10 @@ mvn versions:set -DnewVersion=1.Y.0-SNAPSHOT
 git commit -m 'Bumped version to 1.Y.0-incubating-SNAPSHOT' -a
 ```
 
-Since this needs to be merged in `master`, we need to follow the regular process 
+Since this needs to be merged in `master`, we need to follow the regular process
 and create a Pull Request on github.
 
-#### 6. Write release notes
+#### 7. Write release notes
 
 Check the milestone in Github associated with the release.
 https://github.com/apache/incubator-pulsar/milestones
@@ -168,7 +169,7 @@ In the release item, add the list of most important changes that happened in the
 release and a link to the associated milestone, with the complete list of all the
 changes.
 
-#### 7. Run the vote
+#### 8. Run the vote
 
 Send an email on the Pulsar Dev mailing list:
 
@@ -208,7 +209,7 @@ vote as well.
 
 If the release is approved here, we can then proceed to next step.
 
-#### 8. Run the vote on Incubator
+#### 9. Run the vote on Incubator
 
 Since Pulsar is an incubator project, the release must be approved by the ASF Incubator PMC.
 
@@ -227,7 +228,7 @@ from Incubator PMC members.
 If the outcome is successful, we can continue on the next step, otherwise we'll fix the issues
 and restart from step 2, this time issuing a `1.X.0-incubating-candidate-1` release.
 
-#### 9. Promote the release
+#### 10. Promote the release
 
 Create the final git tag:
 
@@ -253,7 +254,7 @@ svn ls https://dist.apache.org/repos/dist/release/incubator/pulsar
 svn rm https://dist.apache.org/repos/dist/release/incubator/pulsar/pulsar-1.Y.0
 ```
 
-#### 10. Update the site
+#### 11. Update the site
 
 Copy the `latest` documentation into a version specific folder.
 
@@ -281,7 +282,7 @@ archived_releases:
 
 Commit the config change and submit a PR on Github.
 
-#### 11. Announce the release
+#### 12. Announce the release
 
 Once the release artifacts are available in the Apache Mirrors and the website is updated,
 we need to announce the release.
@@ -317,9 +318,9 @@ The Pulsar Team
 DISCLAIMER:
 Apache Pulsar is an effort undergoing incubation at The Apache Software
 Foundation (ASF), sponsored by the Apache Incubator PMC. Incubation is
-required of all newly accepted projects until a further review indicates that 
-the infrastructure, communications, and decision making process have 
-stabilized in a manner consistent with other successful ASF projects. While 
+required of all newly accepted projects until a further review indicates that
+the infrastructure, communications, and decision making process have
+stabilized in a manner consistent with other successful ASF projects. While
 incubation status is not necessarily a reflection of the completeness or stability
 of the code, it does indicate that the project has yet to be fully endorsed by the ASF.
 ```

@@ -145,6 +145,19 @@ should be available, something like
 https://repository.apache.org/content/repositories/orgapachepulsar-XYZ
 
 
+#### 6. Move master branch to next version
+
+We need to move master version to next iteration `X + 1`.
+
+```
+git checkout master
+mvn versions:set -DnewVersion=1.Y.0-SNAPSHOT
+
+git commit -m 'Bumped version to 1.Y.0-incubating-SNAPSHOT' -a
+```
+
+Since this needs to be merged in `master`, we need to follow the regular process 
+and create a Pull Request on github.
 
 #### 6. Write release notes
 

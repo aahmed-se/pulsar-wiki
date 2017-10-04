@@ -263,7 +263,7 @@ git checkout -b asf-site origin/asf-site
 cd content/docs
 cp -r latest v1.X.0-incubating
 git add v1.X.0-incubating
-git ci -a -m 'Copying generated documenation for v1.X.0-incubating'
+git commit -a -m 'Copying generated documenation for v1.X.0-incubating'
 git push origin asf-site
 ```
 

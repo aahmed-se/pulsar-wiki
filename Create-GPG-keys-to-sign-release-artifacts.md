@@ -23,6 +23,72 @@ default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB
 EOL >> ~/.gnupg/gnupg.conf
 ```
 
+Check the version.
+
+```shell
+gpg --version
+
+gpg (GnuPG) 2.1.22
+libgcrypt 1.8.0
+Copyright (C) 2017 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Home: /Users/nkurihar/.gnupg
+Supported algorithms:
+Pubkey: RSA, ELG, DSA, ECDH, ECDSA, EDDSA
+Cipher: IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,
+        CAMELLIA128, CAMELLIA192, CAMELLIA256
+Hash: SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224
+Compression: Uncompressed, ZIP, ZLIB, BZIP2
+```
+
+Generate new GPG key.
+Note that new **RSA** keys generated should be at least **4096** bits.
+
+```shell
+# For 1.x or 2.0.x
+gpg --gen-key
+
+# For 2.1.x
+gpg --full-gen-key
+
+gpg (GnuPG) 2.1.22; Copyright (C) 2017 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Please select what kind of key you want:
+   (1) RSA and RSA (default)
+   (2) DSA and Elgamal
+   (3) DSA (sign only)
+   (4) RSA (sign only)
+Your selection? 1
+RSA keys may be between 1024 and 4096 bits long.
+What keysize do you want? (2048) 4096
+Requested keysize is 4096 bits       
+Please specify how long the key should be valid.
+         0 = key does not expire
+      <n>  = key expires in n days
+      <n>w = key expires in n weeks
+      <n>m = key expires in n months
+      <n>y = key expires in n years
+Key is valid for? (0) 0
+Key does not expire at all
+Is this correct? (y/N) y
+                        
+GnuPG needs to construct a user ID to identify your key.
+
+Real name: test user
+Email address: test@apache.org
+Comment: CODE SIGNING KEY     
+You selected this USER-ID:
+    "test user (CODE SIGNING KEY) <test@apache.org>"
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
+<Enter passphrase>
+```
+
 The GPG key needs to be appended to `KEYS` file that is stored in 2 SVN locations,
 one for proper releases and one for the release candidates.
 

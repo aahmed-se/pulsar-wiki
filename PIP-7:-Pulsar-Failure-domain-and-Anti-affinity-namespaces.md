@@ -32,7 +32,7 @@ Broker will store domain configuration in global-zookeeper at path: `/admin/clus
 - It stores list of brokers under a specific domain
 - One broker can’t be part of multiple domains and API validates it before adding broker into domain
 
-### Admin api for failure-domain:
+### Admin api:
 - **Create domain:** 
 It creates a domain under a specific cluster
 ```
@@ -71,6 +71,12 @@ For instance in figure 1:
 [Figure 1: anti-affinity namespace distribution across failure domains]
 
 ### Admin api:
+An anti-affinity group will be a unique identifier that groups all the namespaces that have anti-affinity to each other. Namespaces with the same anti-affinity group are considered as anti-affinity namespaces.
+
+An anti-affinity group is created automatically when the first namespace is assigned to the group.
+
+Each namespace can belong to only one anti-affinity group. If a namespace with an existing anti-affinity assignment is  assigned to another anti-affinity group, the original assignment will be dropped.
+
 (1) Assign a namespace to an  anti-affinity group:  It sets anti-affinity group name for a namespace. 
 ```	
 $ pulsar-admin namespaces set-anti-affinity-group <namespace> --group <group-name>
@@ -104,4 +110,4 @@ As we described earlier, load-balancer will provide a best effort to distribute 
 
 If we add a new namespace to an existing anti-affinity group then load-balancer will not unload already loaded namespace bundles but load-balancer will make sure that newly coming lookup request considers this change.
 
-Load-balancer's load-shedding task should not unload the namespace if none of the candidate-broker other than current broker is eligible (due to maintain uniform distribution across the failure-domain and brokers) to own the anti-affinity namespace.
+Load-balancer's load-shedding task should not unload the namespace if none of the candidate-broker other than current broker is eligible (due to maintain uniform namespace-distribution across the failure-domains and brokers) to own the anti-affinity namespace.

@@ -1,5 +1,3 @@
-# PIP-7 Pulsar Failure domain and Anti-affinity namespaces
-
  * **Status**: 
  * **Pull Request**: 
   * **Issue**: [#840](https://github.com/apache/incubator-pulsar/issues/840)

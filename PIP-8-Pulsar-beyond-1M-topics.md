@@ -15,8 +15,10 @@ If the NS space can be partitioned across multiple Pulsar clusters (effectively 
 
 ## Current Pulsar architecture
 Each region has one Pulsar cluster. One Global ZK, one local ZK, along with the brokers and bookies form a Pulsar cluster.
+<img width="737" alt="currentpulsar" src="https://user-images.githubusercontent.com/22042978/32640080-b87e8898-c57b-11e7-8b8e-4aad5c397b6b.png">
 ## Proposed Pulsar architecture
 The new architecture will have more than one Pulsar cluster in each region. The figure below is an example with Pulsar across 2 regions, with 2 local clusters in each.
+<img width="736" alt="newpulsar" src="https://user-images.githubusercontent.com/22042978/32640079-b5edd41c-c57b-11e7-9021-3543288cd4c0.png">
 ## Scope of changes
 The Global NS space is unique for global namespaces, so this does not require any special consideration. The only problem to be resolved is how the NS space is to be distributed among a particular group of local clusters. The NS space assignment needs to deterministic and stateful within a cluster. If that can be achieved, all existing mechanisms of administration and operation would continue to work. The local clusters in effect become distinct clusters with no interaction, except than using the Global ZK to ensure there are no collisions in the NS space across them. Fortunately, there is no need to make any changes to Pulsar to make the NS assignment stateful and deterministic. 
 ## Peer groups
@@ -39,6 +41,7 @@ The peer group as a whole needs to get a new URL, which fronts the entire list o
 Replication within a peer group will be disallowed, as it violates the namespace uniqueness requirement. Attempting to do so will fail automatically if the local clusters share the same Global ZK installation. Otherwise it will have to be enforced at the API implementation level. The examples above show a Global ZK installation for each local cluster, but that is not necessary.
 
 Nothing in this design requires that we have an identical regions of Pulsar clusters across all datacenters. For eg: We could have one local cluster in one datacentre, and 2 in another.
+<img width="741" alt="anypulsar" src="https://user-images.githubusercontent.com/22042978/32640020-6e3e6f6e-c57b-11e7-871a-e5e8ca85d92b.png">
 
 ## Upgrade 
 
@@ -51,7 +54,6 @@ This means that we will need to create a new peer group URL.
 Existing clients will then need to update their URL settings to the peer group URL. During the upgrade period, both URLs, - the new peer group URL and the existing local cluster URL - will front end the same group of brokers; the existing cluster brokers. After the clients change the setting to the peer group URL, the peer group URL can front-end both set of brokers, from the existing local cluster and the new cluster.
 
 Strictly speaking, this client setting change is not required; the only drawback to not doing this is that all lookups will always end up in the existing local cluster. 
-
 
 
 

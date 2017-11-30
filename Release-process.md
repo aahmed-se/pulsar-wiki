@@ -163,7 +163,7 @@ and create a Pull Request on github.
 #### 7. Write release notes
 
 Check the milestone in Github associated with the release.
-https://github.com/apache/incubator-pulsar/milestones
+https://github.com/apache/incubator-pulsar/milestones?closed=1
 
 In the release item, add the list of most important changes that happened in the
 release and a link to the associated milestone, with the complete list of all the
@@ -180,7 +180,7 @@ Subject: [VOTE] Pulsar 1.X.0-incubating Release Candidate 0
 This is the first release candidate for Apache Pulsar, version 1.X.0-incubating.
 
 It fixes the following issues:
-https://github.com/apache/incubator-pulsar/milestone/8
+https://github.com/apache/incubator-pulsar/milestone/8?closed=1
 
 *** Please download, test and vote by July 29th 2017, 10:00 GMT.
 
@@ -195,6 +195,7 @@ https://repository.apache.org/content/repositories/orgapachepulsar-169/
 
 The tag to be voted upon:
 v1.X.0-incubating-candidate-0 (21f4a4cffefaa9391b79d79a7849da9c539af834)
+https://github.com/apache/incubator-pulsar/releases/tag/v1.X.0-incubating-candidate-0
 
 Pulsar's KEYS file containing PGP keys we use to sign the release:
 https://dist.apache.org/repos/dist/release/incubator/pulsar/KEYS

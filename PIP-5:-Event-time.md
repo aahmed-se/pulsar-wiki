@@ -1,4 +1,4 @@
-- Status: Initial Draft
+- Status: Implemented in 1.20
 - Author: Sijie Guo
 - Discussion Thread: https://lists.apache.org/thread.html/7270626fcd5b0ffd486c45ab32deda48359c5bc3cca2082ca2d99bce@%3Cdev.pulsar.apache.org%3E
 - Issue: #xxx

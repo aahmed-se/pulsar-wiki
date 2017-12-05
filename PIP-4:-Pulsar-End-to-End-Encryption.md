@@ -1,5 +1,5 @@
 # Pulsar End To End Encryption
- * **Status**: Initial Draft
+ * **Status**: Implemented
  * **Issue**: [633](https://github.com/apache/incubator-pulsar/issues/633)
 
 ## Introduction

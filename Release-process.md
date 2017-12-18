@@ -240,8 +240,8 @@ git push origin v1.X.0-incubating
 
 Promote the artifacts on the release location:
 ```shell
-svn move https://dist.apache.org/repos/dist/dev/incubator/pulsar/pulsar-1.X.0-candidate-0 \
-         https://dist.apache.org/repos/dist/release/incubator/pulsar/pulsar-1.X.0
+svn move https://dist.apache.org/repos/dist/dev/incubator/pulsar/pulsar-1.X.0-incubating-candidate-0 \
+         https://dist.apache.org/repos/dist/release/incubator/pulsar/pulsar-1.X.0-incubating
 ```
 
 Remove the old releases (if any). We only need the latest release there, older releases are
@@ -252,7 +252,7 @@ available through the Apache archive:
 svn ls https://dist.apache.org/repos/dist/release/incubator/pulsar
 
 # Delete each release (except for the last one)
-svn rm https://dist.apache.org/repos/dist/release/incubator/pulsar/pulsar-1.Y.0
+svn rm https://dist.apache.org/repos/dist/release/incubator/pulsar/pulsar-1.Y.0-incubating
 ```
 
 #### 11. Update the site

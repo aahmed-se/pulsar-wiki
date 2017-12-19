@@ -277,7 +277,9 @@ In `site/_config.yml` :
 current_version: 1.X.0-incubating
 archived_releases:
     - 1.19.0-incubating
-
+    - 1.20.0-incubating
+    ...
+    - 1.Y.0-incubating
 # ...
 ```
 

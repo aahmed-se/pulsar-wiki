@@ -255,6 +255,11 @@ svn ls https://dist.apache.org/repos/dist/release/incubator/pulsar
 svn rm https://dist.apache.org/repos/dist/release/incubator/pulsar/pulsar-1.Y.0-incubating
 ```
 
+Promote the Maven staging repository for release. Login to `https://repository.apache.org` and 
+select the staging repository associated with the RC candidate that was approved. The naming
+will be like `orgapachepulsar-XYZ`. Select the repository and click on "Release". Artifacts 
+will now be made available on Maven central.
+
 #### 11. Update the site
 
 Copy the `latest` documentation into a version specific folder.

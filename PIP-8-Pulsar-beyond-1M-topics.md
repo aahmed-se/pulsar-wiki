@@ -1,3 +1,8 @@
+# Pulsar beyond 1M topics
+
+ * **Status**: Implemented
+ * **Pull Request**: [#903](https://github.com/apache/incubator-pulsar/pull/903)
+
 # Introduction
 Pulsar was designed to serve 1M topics in a cluster. We have a need to scale Pulsar beyond 1M topics.
 Recent improvements have stretched this 1M limit somewhat, but Pulsar startup time  from a Cloud state with 1M+ topics starts to increase with number of topics.  This proposal is to scale beyond 1M+ topics, and still keep a a limit on startup time

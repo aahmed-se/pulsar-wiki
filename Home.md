@@ -5,6 +5,7 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
+* [PIP 15: Pulsar Functions](https://github.com/apache/incubator-pulsar/wiki/PIP-15:-Pulsar-Functions)
 * [PIP 14: Topic compaction](https://github.com/apache/incubator-pulsar/wiki/PIP-14:-Topic-compaction)
 * [PIP 13: Subscribe to topics represented by regular expressions](https://github.com/apache/incubator-pulsar/wiki/PIP-13:-Subscribe-to-topics-represented-by-regular-expressions)
 * [PIP 12: Introduce builder for creating Producer Consumer Reader](https://github.com/apache/incubator-pulsar/wiki/PIP-12:-Introduce-builder-for-creating-Producer-Consumer-Reader)

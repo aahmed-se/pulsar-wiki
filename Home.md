@@ -5,6 +5,7 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
+* [PIP 16: Pulsar "instance" terminology change](https://github.com/apache/incubator-pulsar/wiki/PIP-16:-Pulsar-%22instance%22-terminology-change)
 * [PIP 15: Pulsar Functions](https://github.com/apache/incubator-pulsar/wiki/PIP-15:-Pulsar-Functions)
 * [PIP 14: Topic compaction](https://github.com/apache/incubator-pulsar/wiki/PIP-14:-Topic-compaction)
 * [PIP 13: Subscribe to topics represented by regular expressions](https://github.com/apache/incubator-pulsar/wiki/PIP-13:-Subscribe-to-topics-represented-by-regular-expressions)

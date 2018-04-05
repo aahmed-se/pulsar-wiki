@@ -123,7 +123,7 @@ A block has a short header, followed by payload data.
 ```
 
  * `magic_word` : 4 bytes, a sequence of bytes used to identify the start of a block
- * `block_len : 4 bytes, the length of the block, including the header
+ * `block_len` : 4 bytes, the length of the block, including the header
  * `block_entry_count` : 4 bytes, the number of entries contained in the block
  * `first_entry_id` : 8 bytes, Entry ID of first entry in the block
 

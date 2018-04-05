@@ -171,7 +171,7 @@ The offset for a block can be calculated as
 
 ```
 (index length) + ((number of preceeding blocks) * (block size, 64MB in this case))
-``
+```
 
 #### Writing to S3
 

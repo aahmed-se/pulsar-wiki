@@ -175,7 +175,7 @@ Send an email on the Pulsar Dev mailing list:
 
 ```
 To: dev@pulsar.incubator.apache.org
-Subject: [VOTE] Pulsar 1.X.0-incubating Release Candidate 0
+Subject: [VOTE] Pulsar Release 1.X.0-incubating Candidate 1
 
 This is the first release candidate for Apache Pulsar, version 1.X.0-incubating.
 
@@ -219,7 +219,7 @@ Start a `VOTE` thread on the incubator mailing list:
 
 ```
 To: general@incubator.apache.org
-Subject: [VOTE] Pulsar 1.X.0-incubating Release Candidate 0
+Subject: [VOTE] Pulsar Release 1.X.0-incubating Candidate 1
 ....
 ```
 

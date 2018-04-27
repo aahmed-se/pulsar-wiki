@@ -66,11 +66,11 @@ mvn versions:set -DnewVersion=1.X.0-incubating
 git commit -m 'Release 1.X.0-incubating' -a
 
 # Create a "candidate" tag
-git tag -u $USER@apache.org v1.X.0-incubating-candidate-0 -m 'Release v1.X.0-incubating-candidate-0'
+git tag -u $USER@apache.org v1.X.0-incubating-candidate-1 -m 'Release v1.X.0-incubating-candidate-1'
 
 # Push both the branch and the tag to Github repo
 git push origin branch-1.X
-git push origin v1.X.0-incubating-candidate-0
+git push origin v1.X.0-incubating-candidate-1
 ```
 
 #### 3. Build and inspect the artifacts
@@ -108,11 +108,11 @@ repository for staging.
 svn co https://dist.apache.org/repos/dist/dev/incubator/pulsar pulsar-dist-dev
 cd svn pulsar-dist-dev
 
-# '-candidate-0' needs to be incremented in case of multiple iteration in getting
+# '-candidate-1' needs to be incremented in case of multiple iteration in getting
 #    to the final release)
-svn mkdir pulsar-1.X.0-incubating-candidate-0
+svn mkdir pulsar-1.X.0-incubating-candidate-1
 
-cd pulsar-1.X.0-incubating-candidate-0
+cd pulsar-1.X.0-incubating-candidate-1
 cp /path/to/apachepulsar-1.X.0-incubating-src.tar.gz .
 cp /path/to/apachepulsar-1.X.0-incubating-bin.tar.gz .
 
@@ -188,14 +188,14 @@ Note that we are voting upon the source (tag), binaries are provided for
 convenience.
 
 Source and binary files:
-https://dist.apache.org/repos/dist/dev/incubator/pulsar/pulsar-1.X.0-incubating-candidate-0/
+https://dist.apache.org/repos/dist/dev/incubator/pulsar/pulsar-1.X.0-incubating-candidate-1/
 
 Maven staging repo:
 https://repository.apache.org/content/repositories/orgapachepulsar-169/
 
 The tag to be voted upon:
-v1.X.0-incubating-candidate-0 (21f4a4cffefaa9391b79d79a7849da9c539af834)
-https://github.com/apache/incubator-pulsar/releases/tag/v1.X.0-incubating-candidate-0
+v1.X.0-incubating-candidate-1 (21f4a4cffefaa9391b79d79a7849da9c539af834)
+https://github.com/apache/incubator-pulsar/releases/tag/v1.X.0-incubating-candidate-1
 
 Pulsar's KEYS file containing PGP keys we use to sign the release:
 https://dist.apache.org/repos/dist/release/incubator/pulsar/KEYS
@@ -240,7 +240,7 @@ git push origin v1.X.0-incubating
 
 Promote the artifacts on the release location:
 ```shell
-svn move https://dist.apache.org/repos/dist/dev/incubator/pulsar/pulsar-1.X.0-incubating-candidate-0 \
+svn move https://dist.apache.org/repos/dist/dev/incubator/pulsar/pulsar-1.X.0-incubating-candidate-1 \
          https://dist.apache.org/repos/dist/release/incubator/pulsar/pulsar-1.X.0-incubating
 ```
 

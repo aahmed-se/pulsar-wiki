@@ -182,7 +182,8 @@ This is the first release candidate for Apache Pulsar, version 1.X.0-incubating.
 It fixes the following issues:
 https://github.com/apache/incubator-pulsar/milestone/8?closed=1
 
-*** Please download, test and vote by July 29th 2017, 10:00 GMT.
+*** Please download, test and vote on this release. This vote will stay open 
+for at least 72 hours ***
 
 Note that we are voting upon the source (tag), binaries are provided for
 convenience.

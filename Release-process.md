@@ -191,6 +191,11 @@ convenience.
 Source and binary files:
 https://dist.apache.org/repos/dist/dev/incubator/pulsar/pulsar-1.X.0-incubating-candidate-1/
 
+SHA-1 checksums:
+
+028313cbbb24c5647e85a6df58a48d3c560aacc9  apache-pulsar-1.X.0-incubating-SNAPSHOT-bin.tar.gz
+f7cc55137281d5257e3c8127e1bc7016408834b1  apache-pulsar-1.x.0-incubating-SNAPSHOT-src.tar.gz
+
 Maven staging repo:
 https://repository.apache.org/content/repositories/orgapachepulsar-169/
 

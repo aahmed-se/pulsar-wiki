@@ -154,6 +154,7 @@ We need to move master version to next iteration `X + 1`.
 ```
 git checkout master
 mvn versions:set -DnewVersion=1.Y.0-incubating-SNAPSHOT
+mvn versions:set -DnewVersion=1.Y.0-incubating-SNAPSHOT -pl buildtools
 
 git commit -m 'Bumped version to 1.Y.0-incubating-SNAPSHOT' -a
 ```

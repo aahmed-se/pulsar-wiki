@@ -61,6 +61,7 @@ be the final one.
 ```shell
 # Bump to the release version
 mvn versions:set -DnewVersion=1.X.0-incubating
+mvn versions:set -DnewVersion=1.X.0-incubating -pl buildtools/
 
 # Commit
 git commit -m 'Release 1.X.0-incubating' -a

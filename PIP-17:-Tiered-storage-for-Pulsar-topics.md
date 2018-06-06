@@ -1,4 +1,4 @@
-* **Status**: Proposal
+* **Status**: Implemented
 * **Authors**: Ivan Kelly
 * **Mailing List discussion**: https://lists.apache.org/thread.html/3f1c98658395c92e3c858ff966aa829dba0e165a28ef350e0ec3a33f@%3Cdev.pulsar.apache.org%3E
 * **Prototype**: https://github.com/ivankelly/incubator-pulsar/tree/s3-offload-proto
@@ -42,28 +42,27 @@ Tiered storage requires the following changes:
  * Triggering mechanism
  * Offloading implementation for S3
 
-#### SegmentOffloader interface
+#### LedgerOffloader interface
 
 ```java
-interface SegmentOffloader {
-    CompletableFuture<byte[]> offload(ReadHandle segment,
-                                      Map<String, String> extraMetadata);
-    CompletableFuture<ReadHandle> readOffloaded(long ledgerId,
-                                                byte[] offloadContext);
-    CompletableFuture<Void> deleteOffloaded(long ledgerId,
-                                            byte[] offloadContext);
+interface LedgerOffloader {
+    CompletableFuture<Void> offload(ReadHandle ledger,
+                                    UUID uid,
+                                    Map<String, String> extraMetadata);
+    CompletableFuture<ReadHandle> readOffloaded(long ledgerId, UUID uid);
+    CompletableFuture<Void> deleteOffloaded(long ledgerId, UUID uid);
 }
 ```
 
-The *offload* method should take a `ReadHandle` to a segment, and copy all the data in that segment to an object store. The method returns a context, containing extra information which can be used to lookup the object on read. For example, in the case of S3, this context could be used to specify a region or a bucket. From Pulsar’s point of view, this data is opaque. It is up to the implementation of the `SegmentOffloader` interface to serialize and deserialize the context. The context is stored in the ManagedLedger metadata as part of `LedgerInfo` (see below). The context can be an empty byte array, in which case only the `ledgerId` is used for lookup.
+The *offload* method should take a `ReadHandle` to a segment, and copy all the data in that segment to an object store. It also takes a UUID which identifies the attempt to offload the segment. This UUID is stored in the managed ledger metadata before the offload attempt, so that if a crash occurs, the failed attempt can be cleaned up by a later attempt. The UUID also prevents multiple concurrent attempts from interfering with each other, though this eventuallity should never occur.
 
 The `extraMetadata` parameter is used to add some extra information to the object in the data store. For example, it can be used to carry the name of the managed ledger the segment is part of and the version of the software doing the offloading. The metadata is not intended to be read back by Pulsar, but rather to be used in inspection and debugging of the object store.
 
-The `readOffloaded` method takes a ledger ID and a context and returns a `ReadHandle` which is backed by an object in the object store. Reading from this handle is identical to reading from the bookkeeper-backed `ReadHandle` passed into offload.
+The `readOffloaded` method takes a ledger ID and the aforementioned UUID and returns a `ReadHandle` which is backed by an object in the object store. Reading from this handle is identical to reading from the bookkeeper-backed `ReadHandle` passed into offload.
 
 The `deleteOffloaded` method deletes the segment from the object store.
 
-A `SegmentOffloader` implementation is passed as a parameter in a `ManagedLedgerConfig` object when opening a managed ledger via the managed ledger factory. If no implementation is specified, a default implementation is used which simply throws an exception on any usage.
+A `LedgerOffloader` implementation is passed as a parameter in a `ManagedLedgerConfig` object when opening a managed ledger via the managed ledger factory. If no implementation is specified, a default implementation is used which simply throws an exception on any usage.
 
 Segment offloading is implemented as an interface rather than directly in managed ledger to allow implementations to inspect and massage the data before it goes to the object store. For example, it may make sense for Pulsar to break out batch messages into individual messages before storing in the object store, so that the object can be used directly by some other system. Managed ledgers know nothing of these batches, nor should they, so the interface allows these concerns to be kept separate.
 
@@ -78,19 +77,18 @@ A new managed ledger call is provided.
 
 ```java
 interface ManagedLedger {
-    void asyncOffloadPrefix(Position pos, OffloadCallback cb, Object ctx);
+    Position asyncOffloadPrefix(Position pos, OffloadCallback cb, Object ctx);
 }
 ```
 
-This call selects all sealed segments in the managed ledger before the passed in position, offloads them to an object store, updates the metadata, and deletes the key.
+This call selects all sealed segments in the managed ledger before the passed in position, offloads them to an object store and updates the metadata. The original segments will be deleted after a configured lag time, 4 hours by default.
 
-Updating the metadata involves setting a string field, `offloadKey`, in the `LedgerInfo` object associated with the segment. At the end of the operation, the metadata is written to zookeeper.
+The metadata has a new context object for each segment in the managed ledger. This context contains:
 
-The offload prefix operation is mutually exclusive with trimming operations.
-
-The `offloadKey` is used when creating opening segments for reading. If an `offloadKey` exists, then `readOffloaded` is called with the key. Otherwise the segment is opened from bookkeeper as is currently always the case.
-
-It is also used when an offloaded segment is trimmed from the head of the log.
+- UUID the uuid of the most recent offload attempt
+- A boolean flag to indicate whether offload has completed
+- A boolean flag to indicate if the original bookkeeper segment has been deleted
+- The timestamp when the offload succeeded
 
 ### Triggering an offload
 
@@ -104,41 +102,45 @@ Setting `offloadSizeInMB` will cause segments to be offloaded to longterm storag
 
 ### S3 Implementation of SegmentOffloader
 
-A single segment in bookkeeper maps to a single object in S3. The object has two parts, an index and payload. The payload contains all the entries of the segment.
+A single segment in bookkeeper maps to a two S3 objects, an index and a data object. The data object contains all the entries of the segment, while the index contains pointers into data object to allow quicker lookup of specific entries. The index entries are per block.
 
-The schema version is stored as part of the S3 object user metadata.
+The data format version for both the index and data objects is stored as part of the S3 object user metadata.
 
-The object is written to S3 using a [multipart upload](https://docs.aws.amazon.com/AmazonS3/latest/API/mpUploadInitiate.html). The index is stored in part 1. The payload is split into 64MB blocks, and each block is uploaded as a “part”.
+The data object is written to S3 using a [multipart upload](https://docs.aws.amazon.com/AmazonS3/latest/API/mpUploadInitiate.html). The payload is split into 64MB blocks, and each block is uploaded as a “part”.
 
-S3’s API requires that the size of the uploaded part is specified before sending the data. Therefore, all blocks apart from the final block must be exactly 64MB. Blocks can only contain complete entries, so if an entry doesn’t fit into the end of a block, the remaining bytes must be padded, with the pattern 0xDEAD1234.
+S3’s API requires that the size of the uploaded part is specified before sending the data. Therefore, all blocks apart from the final block must be exactly 64MB. Blocks can only contain complete entries, so if an entry doesn’t fit into the end of a block, the remaining bytes must be padded, with the pattern 0xFEDCDEAD.
 
 The size of the final block can be calculated exactly before writing. The calculation is as follows.
 
 ```
 (block header size)
  + ((length of segment) - (sum of length of already written entries))
- + ((number of entries to be written) * 4)
+ + ((number of entries to be written) * 4 * 8)
 ```
+
+For each entry, 4 bytes are used to specify the length, and 8 bytes are used to store the entry ID.
 
 #### Payload format
 
-A block has a short header, followed by payload data.
+A block has a short header of length 128, followed by payload data.
 ```
-[ magic_word ][ block_len ][ block_entry_count ][ first_entry_id ]
+[ magic_word ][ header_len ][ block_len ][ first_entry_id ][ padding ]
 ```
 
  * `magic_word` : 4 bytes, a sequence of bytes used to identify the start of a block
- * `block_len` : 4 bytes, the length of the block, including the header
- * `block_entry_count` : 4 bytes, the number of entries contained in the block
+ * `header_len` : 8 bytes, the length of the block header (128 for now)
+ * `block_len` : 8 bytes, the length of the block, including the header
  * `first_entry_id` : 8 bytes, Entry ID of first entry in the block
+ * `padding` : As many bytes as necessary to bring the header length to the length specified by `header_len`
 
 The payload data is a sequence of entries of the format
 
 ```
-[ entry_len ][ entry_data ]
+[ entry_len ][ entry_id ][ entry_data ]
 ```
 
  * `entry_len` : 4 bytes, the length of the entry
+ * `entry_id` : 8 bytes, the ID of the entry
  * `entry_data` : as many bytes as specified in entry_len
 
 Padding may be added at the end to bring the block to the correct size.
@@ -149,11 +151,13 @@ The index is a short header and then sequence of mappings.
 
 The index header is
 ```
-[ index_magic_word ][ index_len ][ index_entry_count ][ segment metadata ]
+[ index_magic_word ][ index_len ][ data_object_length ][ data_header_length ][ index_entry_count ][ segment metadata ]
 ```
 
  * `index_magic_word` : 4 bytes, a sequence of bytes to identify the index
  * `index_len` : 4 bytes, the total length of the index in bytes, including the header
+ * `data_object_length` : 8 bytes, the total length of the data object this index is associated with
+ * `data_header_length` : 8 bytes, the length of the data block headers in the data object
  * `index_entry_count` : 4 bytes, the total number of mappings in the index
  * `segment_metadata_len` : 4 bytes, the length of the segment metadata
  * `segment_metadata` : the binary representation of the segment metadata, stored in protobuf format
@@ -161,8 +165,8 @@ The index header is
 The body of the index contains mappings from the entry id of the first entry in a block to the block id, and the offset of the block within the S3 object. For example:
 
 ```
-[ entryId:   0 ] -> [ block: 2, offset: 0]
-[ entryId: 100 ] -> [ block: 3, offset: 12345 ]
+[ entryId:   0 ] -> [ block: 1, offset: 0]
+[ entryId: 100 ] -> [ block: 2, offset: 12345 ]
 ...
 ```
 
@@ -175,12 +179,12 @@ Block id corresponds to S3 object part number. For the payload they start at 2. 
 The offset for a block can be calculated as
 
 ```
-(index length) + ((number of preceeding blocks) * (block size, 64MB in this case))
+((number of preceeding blocks) * (block size, 64MB in this case))
 ```
 
 #### Writing to S3
 
-We use the S3 multipart API to upload a segment to S3. Entries are written to 2MB byte buffers, and these are uploaded as parts, with part id starting from 2. The first entry id of each block is recorded locally along with the part id and the length of the block.
+We use the S3 multipart API to upload a segment to S3. The first entry id of each block is recorded locally along with the part id and the length of the block.
 
 ```java
 void writeToS3(ReadHandle segment) {
@@ -201,18 +205,18 @@ void writeToS3(ReadHandle segment) {
     nextEntry = is.lastEntryWritten() + 1;
     bytesWritten += is.entryBytesWritten();
   }
-
-  buildAndWriteIndex(uploadId);
   finalizeUpload(uploadId);
+
+  buildAndWriteIndex();
 }
 ```
 
 The algorithm has roughly the form of the pseudocode above. As S3 doesn’t seem to have an asynchronous API which gives you fine grained access to multipart, the upload should run in a dedicated threadpool.
 
-The most important component when writing is `BlockAwareSegmentInputStream`. This allows the reader to read exactly `blockSize` bytes. It first returns the header, followed by complete entries from the segment in the format specified above. Once it can no longer writer a complete entry due to the `blockSize` limit, it outputs bytes the pattern `0xDEAD1234` until it reaches the limit. It tracks the ID of the last entry it has written as well as the sum of the cumulative entry bytes written, which can be used by the caller calculate the size of the next block.
+The most important component when writing is `BlockAwareSegmentInputStream`. This allows the reader to read exactly `blockSize` bytes. It first returns the header, followed by complete entries from the segment in the format specified above. Once it can no longer writer a complete entry due to the `blockSize` limit, it outputs bytes the pattern `0xFEDCDEAD` until it reaches the limit. It tracks the ID of the last entry it has written as well as the sum of the cumulative entry bytes written, which can be used by the caller calculate the size of the next block.
 
 #### Reading from S3
 
-To read back from S3 we make a read request for part 1 of the object to load the index. Then when a client makes request to read entries, we do a binary search into the index to find which blocks needed to be loaded and request those blocks.
+To read back from S3 we make a read request for the index object for the segment. Then when a client makes request to read entries, we do a binary search into the index to find which blocks needed to be loaded and request those blocks.
 
 We don’t load the whole block each time while reading, as this would mean holding many 64MB blocks in memory when only a fraction of that is currently useful. Instead we read 1MB at a time from S3 using by setting the range on the get object request. To read an entries in the middle of a block, we read from the start of the block until we find that block. The offset of some of the read entries are cached and these are used to enhance the index, so we can quickly find these entries, or nearby entries.

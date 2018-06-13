@@ -231,7 +231,7 @@ Subject: [VOTE] Pulsar Release 1.X.0-incubating Candidate 1
 ....
 ```
 
-Add a link to the dev@ vote thread, you can get that through lists.apache.org
+Add a link to the dev@ vote thread, you can get that through https://lists.apache.org/
 
 As before, the vote should be open for at least 72 hours and it should get at least 3 binding +1s
 from Incubator PMC members.

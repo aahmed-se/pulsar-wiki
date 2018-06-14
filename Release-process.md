@@ -100,13 +100,16 @@ Inspect the artifacts:
  bin/pulsar standalone
  ```
 
-##### 3.1. Build RPM packages
+##### 3.1. Build RPM and DEB packages
 
 ```shell
 pulsar-client-cpp/pkg/rpm/docker-build-rpm.sh
+
+pulsar-client-cpp/pkg/deb/docker-build-deb.sh
 ```
 
-This will leave the RPM and YUM repo files in `pulsar-client-cpp/pkg/rpm/RPMS/x86_64` directory.
+This will leave the RPM/YUM and DEB repo files in `pulsar-client-cpp/pkg/rpm/RPMS/x86_64` and 
+`pulsar-client-cpp/pkg/deb/BUILD/DEB` directory.
 
 #### 4. Sign and stage the artifacts
 

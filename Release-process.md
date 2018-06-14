@@ -100,6 +100,14 @@ Inspect the artifacts:
  bin/pulsar standalone
  ```
 
+##### 3.1. Build RPM packages
+
+```shell
+pulsar-client-cpp/pkg/rpm/docker-build-rpm.sh
+```
+
+This will leave the RPM and YUM repo files in `pulsar-client-cpp/pkg/rpm/RPMS/x86_64` directory.
+
 #### 4. Sign and stage the artifacts
 
 The `src` and `bin` artifacts need to be signed and uploaded to the dist SVN
@@ -114,11 +122,7 @@ cd svn pulsar-dist-dev
 svn mkdir pulsar-1.X.0-incubating-candidate-1
 
 cd pulsar-1.X.0-incubating-candidate-1
-cp /path/to/apachepulsar-1.X.0-incubating-src.tar.gz .
-cp /path/to/apachepulsar-1.X.0-incubating-bin.tar.gz .
-
-# There is a script to perform the signing in Pulsar repo
-$PULSAR_PATH/src/sign-release.sh *.tar.gz
+$PULSAR_PATH/src/stage-release.sh .
 
 svn add *
 svn ci -m 'Staging artifacts and signature for Pulsar release 1.X.0-incubating'

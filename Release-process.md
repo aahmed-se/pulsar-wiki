@@ -76,9 +76,6 @@ git push origin v1.X.0-incubating-candidate-1
 
 #### 3. Build and inspect the artifacts
 
-Perform the build in a Linux machine (that's because the build is compiling some C source files
-for the `pulsar-checksum` module).
-
 ```shell
 mvn install
 ```

@@ -27,3 +27,4 @@ We encourage to document any big change or feature or any addition to public use
 
  * [Create GPG keys to sign release artifacts](https://github.com/apache/incubator-pulsar/wiki/Create-GPG-keys-to-sign-release-artifacts)
  * [Release process](https://github.com/apache/incubator-pulsar/wiki/Release-process)
+ * [Client features matrix](https://github.com/apache/incubator-pulsar/wiki/Client-Features-Matrix)

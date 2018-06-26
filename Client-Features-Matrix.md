@@ -7,8 +7,8 @@ This matrix is updated with Pulsar 2.1 release.
 | Feature                                   | Java | C++ | Go | Python | WebSocket |
 |:------------------------------------------|:----:|:---:|:--:|:------:|:---------:|
 | Partitioned topics                        |  ✅   |  ✅  | ✅  |   ✅    |     ✅     |
-| Batching                                  |  ✅   |  ✅  | ✅  |   ✅    |     ❌     |
-| Compression                               |  ✅   |  ✅  | ✅  |   ✅    |     ❌     |
+| Batching                                  |  ✅   |  ✅  | ✅  |   ✅    |     ✅     |
+| Compression                               |  ✅   |  ✅  | ✅  |   ✅    |     ✅     |
 | TLS                                       |  ✅   |  ✅  | ✅  |   ✅    |     ✅     |
 | Authentication                            |  ✅   |  ✅  | ✅  |   ✅    |     ✅     |
 | Reader API                                |  ✅   |  ✅  | ✅  |   ✅    |     ✅     |

@@ -88,6 +88,10 @@ After the build, there will be 2 generated artifacts:
 Inspect the artifacts:
  * Unpack both of them
  * Check that the `LICENSE` and `NOTICE` files cover all included jars (especially for the -bin package)
+   - Use script to cross-validate `LICENSE` file with included jars: 
+      ```
+      src/check-binary-license all/target/apache-pulsar-1.X.0-incubating-bin.tar.gz
+      ```
  * Run Apache RAT to verify the license headers in the `src` package:
  ```shell
  mvn apache-rat:check

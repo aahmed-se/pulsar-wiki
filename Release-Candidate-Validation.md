@@ -3,7 +3,6 @@
   * [Validate Pub/Sub and Java Functions](#validate-pubsub-and-java-functions)
   * [Validate Connectors](#validate-connectors)
   * [Validate Stateful Functions](#validate-stateful-functions)
-  * [Validate Python Functions](#validate-python-functions)
 - [Validate RPM and DEB packages](#validate-rpm-and-deb-packages)
   * [Prepare](#prepare)
   * [Validate RPM](#validate-rpm)
@@ -523,10 +522,6 @@ The result in the terminal open at step 3 is updated to `20`.
 value = 10
 value = 20
 ```
-
-#### Validate Python Functions
-
-
 
 ### Validate RPM and DEB packages
 

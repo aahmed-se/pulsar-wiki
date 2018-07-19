@@ -1,6 +1,6 @@
 - [Validate Binary Distribution](#validate-the-binary-distribution)
   * [Download Binary Distributions](#download-the-binary-distributions)
-  * [Validate Pub/Sub and Java Functions](#validate-pub-sub-and-java-functions)
+  * [Validate Pub/Sub and Java Functions](#validate-pubsub-and-java-functions)
   * [Validate Connectors](#validate-connectors)
 
 Here are some instructions for reviewing and validating a release candidate.

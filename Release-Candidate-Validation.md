@@ -2,7 +2,33 @@ Here are some instructions for reviewing and validating a release candidate.
 
 ### Validate the binary distribution
 
-Unzip the binary distribution. The unzipped binary should be in a directory called `apache-pulsar-<release>`. All the operations below happen within that directory.
+#### Download the binary distributions
+
+Since Pulsar 2.1, we are shipping two binary distributions. one is server component, containing all the binaries for running Pulsar Service, the other one is a built-in connectors distribution, containing all the built-in connectors.
+
+Unzip the server distribution `apache-pulsar-<release>-bin.tar.gz`. The unzipped binary should be in a directory called `apache-pulsar-<release>`. All the operations below happen within that directory.
+
+```shell
+$ cd apache-pulsar-<release>
+```
+
+In the apache pulsar directory, unzip the io package and copy the connectors as `connectors` in the pulsar distribution.
+
+```shell
+$ tar xf /path/to/apache-pulsar-io-connectors-<release>-bin.tar.gz
+// you will find a directory named `apache-pulsar-io-connectors-<release>`
+// move the connectors
+$ mv apache-pulsar-io-connectors-<release>/connectors connectors
+$ ls connectors
+pulsar-io-aerospike-<release>.nar
+pulsar-io-cassandra-<release>.nar 
+pulsar-io-kafka-<release>.nar     
+pulsar-io-kinesis-<release>.nar   
+pulsar-io-rabbitmq-<release>.nar  
+pulsar-io-twitter-<release>.nar
+```
+
+#### Validate Pub/Sub and Java Functions
 
 1. Open one terminal to start a standalone cluster.
 

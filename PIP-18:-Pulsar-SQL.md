@@ -9,17 +9,19 @@ N/A
 We are trying to create a method in which users can explore, in a natural manner,  the data already stored within Pulsar topics.  We believe the best way to accomplish this is to expose SQL interface that allows users to query existing data within a Pulsar cluster.  
 
 Just to be absolutely clear,  the SQL we are proposing is for querying data already in Pulsar and we are currently not proposing the implementation of any sort of SQL on data streams
-Why are we doing this?
 
-Many users are interested for such a feature.  For example, many users store large amounts of historical data in Pulsar for various purposes.  Giving them to capability to query that that data gives them huge value.  Users will typically need to stream the data out of Pulsar and into another platform to do any sort of analysis, but with Pulsar SQL, users can just use one platform.
-How are we going to do it?
+
+## Why are we doing this?
+
+Many users are interested in such a feature.  For example, many users store large amounts of historical data in Pulsar for various purposes.  Giving them to capability to query that that data gives them huge value.  Users will typically need to stream the data out of Pulsar and into another platform to do any sort of analysis, but with Pulsar SQL, users can just use one platform.
+
+## How are we going to do it?
 
 With the implementation of a schema registry in Pulsar, data can be structured so that it can be easily mapped to tables that can be queried by SQL. We plan on using Presto (https://prestodb.io/) as the backbone of Pulsar SQL.  A connector can be implemented using the Presto connector SPI that allows presto to ingest data from Pulsar and to be queried using Presto’s existing SQL framework.
 
 The schema registry will be used to generate the structure of tables that will be used in Presto.  Presto workers will load data directly from bookies through a read-only managed-ledger interface, so that we can have a many to many throughput and avoid impacting brokers with read activity.
 
 Thus, Pulsar will be queried for metadata concerning topics and schemas and from that metadata, we will go directly to the bookies to load and deserialize the data.
-
 
 
 ## Goals

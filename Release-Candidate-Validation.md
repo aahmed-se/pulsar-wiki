@@ -537,7 +537,6 @@ in centos container, go to directory `/pulsar`
 ```shell
 [root@e6c29e2b70a9 /]# cd pulsar/
 [root@e6c29e2b70a9 pulsar]# ls
-apache-pulsar-2.1.0-incubating  apache-pulsar-client-dev.deb  apache-pulsar-client-devel-2.1.0-1_incubating.x86_64.rpm
 ```
 
 2. Install RPM in the centos container
@@ -575,30 +574,26 @@ producer  producer.go
 # ./producer
 ```
 
-#### Validate RPM
+#### Validate DEB
 
-1. Start a centos docker to install RPM
+1. Start an ubuntu docker to install DEB
 
 ```shell
-$ docker run -it --rm -v `pwd`:/pulsar centos:7
+$ docker run -it --rm -v `pwd`:/pulsar ubuntu:16.04
 ```
 
-in centos container, go to directory `/pulsar`
+in ubuntu container, go to directory `/pulsar`
 
 ```shell
 [root@e6c29e2b70a9 /]# cd pulsar/
 [root@e6c29e2b70a9 pulsar]# ls
-apache-pulsar-2.1.0-incubating  apache-pulsar-client-dev.deb  apache-pulsar-client-devel-2.1.0-1_incubating.x86_64.rpm
 ```
 
 2. Install RPM in the centos container
 
 ```shell
-# rpm -ivh apache-pulsar-client-devel-2.1.0-1_incubating.x86_64.rpm apache-pulsar-client-2.1.0-1_incubating.x86_64.rpm
-Preparing...                          ################################# [100%]
-Updating / installing...
-   1:apache-pulsar-client-2.1.0-1_incu################################# [ 50%]
-   2:apache-pulsar-client-devel-2.1.0-################################# [100%]
+# apt install ./apache-pulsar-client.deb
+# apt install ./apache-pulsar-client-dev.deb
 ```
 
 3. Build the go client to validate the RPM package.
@@ -606,7 +601,14 @@ Updating / installing...
 a) install go
 
 ```shell
-# yum install -y go git
+# apt-get update
+# apt-get -y upgrade
+# apt-get install -y git curl gcc
+# curl -O https://storage.googleapis.com/golang/go1.9.1.linux-amd64.tar.gz
+# tar -xvf go1.9.1.linux-amd64.tar.gz
+# mv go /usr/local
+# export GOROOT=/usr/local/go
+# export PATH=$PATH:$GOROOT/bin
 ```
 
 b) get pulsar go client
@@ -622,6 +624,5 @@ c) build an example
 # go build .
 # ls
 producer  producer.go
-# ldconfig
 # ./producer
 ```

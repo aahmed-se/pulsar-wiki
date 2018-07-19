@@ -3,6 +3,10 @@
   * [Validate Pub/Sub and Java Functions](#validate-pubsub-and-java-functions)
   * [Validate Connectors](#validate-connectors)
   * [Validate Stateful Functions](#validate-stateful-functions)
+- [Validate RPM and DEB packages](#validate-rpm-and-deb-packages)
+  * [Prepare](#prepare)
+  * [Validate RPM](#validate-rpm)
+  * [Validate DEB](#validate-deb)
 
 Here are some instructions for reviewing and validating a release candidate.
 
@@ -518,7 +522,7 @@ value = 10
 value = 20
 ```
 
-### Validate RPM and DEP packages
+### Validate RPM and DEB packages
 
 #### Prepare
 

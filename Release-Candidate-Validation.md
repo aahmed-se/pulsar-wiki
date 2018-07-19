@@ -418,3 +418,101 @@ cqlsh:pulsar_test_keyspace> select * from pulsar_test_table;
 $ bin/pulsar-admin sink delete --tenant public --namespace default --name cassandra-test-sink
 "Deleted successfully"
 ```
+
+#### Validate Counter Functions
+
+Since Pulsar 2.1, Pulsar enables bookkeeper table service for stateful pulsar functions (as a developer preview).
+
+Here are the instructions to validate counter functions:
+
+1. Create a wordcount function
+
+```shell
+$ bin/pulsar-admin functions create --functionConfigFile examples/example-function-config.yaml --jar examples/api-examples.jar --name word_count --className org.apache.pulsar.functions.api.examples.WordCountFunction --inputs test_wordcount_src --output test_wordcount_dest
+"Created successfully"
+```
+
+2. Get function info and status
+
+```shell
+$ bin/pulsar-admin functions get --tenant test --namespace test-namespace --name word_count
+{
+  "tenant": "test",
+  "namespace": "test-namespace",
+  "name": "word_count",
+  "className": "org.apache.pulsar.functions.api.examples.WordCountFunction",
+  "userConfig": "{\"PublishTopic\":\"test_result\"}",
+  "autoAck": true,
+  "parallelism": 1,
+  "source": {
+    "topicsToSerDeClassName": {
+      "test_wordcount_src": ""
+    },
+    "typeClassName": "java.lang.String"
+  },
+  "sink": {
+    "topic": "test_wordcount_dest",
+    "typeClassName": "java.lang.Void"
+  },
+  "resources": {}
+}
+```
+
+```shell
+$ bin/pulsar-admin functions getstatus --tenant test --namespace test-namespace --name word_count
+{
+  "functionStatusList": [
+    {
+      "running": true,
+      "instanceId": "0",
+      "metrics": {
+        "metrics": {
+          "__total_processed__": {},
+          "__total_successfully_processed__": {},
+          "__total_system_exceptions__": {},
+          "__total_user_exceptions__": {},
+          "__total_serialization_exceptions__": {},
+          "__avg_latency_ms__": {}
+        }
+      },
+      "workerId": "c-standalone-fw-localhost-6750"
+    }
+  ]
+}
+```
+
+3. Query the state table for the function: watching on a key called "hello"
+
+```shell
+$ bin/pulsar-admin functions querystate --tenant test --namespace test-namespace --name word_count -u bk://localhost:4181 -k hello -w
+key 'hello' doesn't exist.
+key 'hello' doesn't exist.
+key 'hello' doesn't exist
+```
+
+4. Produce the messages to source topic `test_wordcount_src`.
+
+Produce 10 messages "hello" to topic `test_wordcount_src`. The value of "hello" should be updated to 10.
+
+```shell
+$ bin/pulsar-client produce -m "hello" -n 10 test_wordcount_src
+```
+
+Checkout the result in the terminal open at step 3.
+
+```shell
+value = 10
+```
+
+Now produce another 10 messages "hello". You will see the result is updated to 20.
+
+```shell
+$ bin/pulsar-client produce -m "hello" -n 10 test_wordcount_src
+```
+
+The result in the terminal open at step 3 is updated to `20`.
+
+```shell
+value = 10
+value = 20
+```

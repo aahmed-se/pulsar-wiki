@@ -216,3 +216,60 @@ test-messages-Thu Jul 19 11:59:15 PDT 2018!
 ----- got message -----
 test-messages-Thu Jul 19 11:59:15 PDT 2018!
 ```
+
+#### Validate Connectors
+
+> Make sure you have docker available at your laptop. If you don't have docker installed, you can skip this section.
+
+1. Setup a cassandra cluster.
+
+```shell
+$ docker run -d --rm  --name=cassandra -p 9042:9042 cassandra
+```
+
+Make sure the cassandra cluster is up running.
+
+```shell
+// run docker ps to find the docker process for cassandra
+$ docker ps
+```
+
+```shell
+// check if the cassandra is running as expected
+$ docker logs cassandra
+```
+
+```shell
+// check the cluster status
+$ docker exec cassandra nodetool status
+Datacenter: datacenter1
+=======================
+Status=Up/Down
+|/ State=Normal/Leaving/Joining/Moving
+--  Address     Load       Tokens       Owns (effective)  Host ID                               Rack
+UN  172.17.0.2  103.67 KiB  256          100.0%            af0e4b2f-84e0-4f0b-bb14-bd5f9070ff26  rack1
+```
+
+```shell
+
+```
+
+2. Create keyspace and table
+
+Run cqlsh:
+```shell
+$ docker exec -ti cassandra cqlsh localhost
+Connected to Test Cluster at localhost:9042.
+[cqlsh 5.0.1 | Cassandra 3.11.2 | CQL spec 3.4.4 | Native protocol v4]
+Use HELP for help.
+cqlsh>
+```
+
+In the cqlsh, create keyspace `pulsar_test_keyspace` and table `pulsar_test_table`.
+
+```shell
+cqlsh> CREATE KEYSPACE pulsar_test_keyspace WITH replication = {'class':'SimpleStrategy', 'replication_factor':1}; 
+cqlsh> USE pulsar_test_keyspace;
+cqlsh:pulsar_test_keyspace> CREATE TABLE pulsar_test_table (key text PRIMARY KEY, col text);
+
+```

@@ -517,3 +517,111 @@ The result in the terminal open at step 3 is updated to `20`.
 value = 10
 value = 20
 ```
+
+### Validate RPM and DEP packages
+
+#### Prepare
+
+Download the RPM and DEP packages to a directory. Let's name this directory as `pulsar_validation`. We will mount this directory to a docker container so that we can validate RPM packages.
+
+#### Validate RPM
+
+1. Start a centos docker to install RPM
+
+```shell
+$ docker run -it --rm -v `pwd`:/pulsar centos:7
+```
+
+in centos container, go to directory `/pulsar`
+
+```shell
+[root@e6c29e2b70a9 /]# cd pulsar/
+[root@e6c29e2b70a9 pulsar]# ls
+apache-pulsar-2.1.0-incubating  apache-pulsar-client-dev.deb  apache-pulsar-client-devel-2.1.0-1_incubating.x86_64.rpm
+```
+
+2. Install RPM in the centos container
+
+```shell
+# rpm -ivh apache-pulsar-client-devel-2.1.0-1_incubating.x86_64.rpm apache-pulsar-client-2.1.0-1_incubating.x86_64.rpm
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:apache-pulsar-client-2.1.0-1_incu################################# [ 50%]
+   2:apache-pulsar-client-devel-2.1.0-################################# [100%]
+```
+
+3. Build the go client to validate the RPM package.
+
+a) install go
+
+```shell
+# yum install -y go git
+```
+
+b) get pulsar go client
+
+```shell
+# go get -u github.com/apache/incubator-pulsar/pulsar-client-go/pulsar
+```
+
+c) build an example
+
+```shell
+# cd ~/go/src/github.com/apache/incubator-pulsar/pulsar-client-go/examples/producer/
+# go build .
+# ls
+producer  producer.go
+# ldconfig
+# ./producer
+```
+
+#### Validate RPM
+
+1. Start a centos docker to install RPM
+
+```shell
+$ docker run -it --rm -v `pwd`:/pulsar centos:7
+```
+
+in centos container, go to directory `/pulsar`
+
+```shell
+[root@e6c29e2b70a9 /]# cd pulsar/
+[root@e6c29e2b70a9 pulsar]# ls
+apache-pulsar-2.1.0-incubating  apache-pulsar-client-dev.deb  apache-pulsar-client-devel-2.1.0-1_incubating.x86_64.rpm
+```
+
+2. Install RPM in the centos container
+
+```shell
+# rpm -ivh apache-pulsar-client-devel-2.1.0-1_incubating.x86_64.rpm apache-pulsar-client-2.1.0-1_incubating.x86_64.rpm
+Preparing...                          ################################# [100%]
+Updating / installing...
+   1:apache-pulsar-client-2.1.0-1_incu################################# [ 50%]
+   2:apache-pulsar-client-devel-2.1.0-################################# [100%]
+```
+
+3. Build the go client to validate the RPM package.
+
+a) install go
+
+```shell
+# yum install -y go git
+```
+
+b) get pulsar go client
+
+```shell
+# go get -u github.com/apache/incubator-pulsar/pulsar-client-go/pulsar
+```
+
+c) build an example
+
+```shell
+# cd ~/go/src/github.com/apache/incubator-pulsar/pulsar-client-go/examples/producer/
+# go build .
+# ls
+producer  producer.go
+# ldconfig
+# ./producer
+```

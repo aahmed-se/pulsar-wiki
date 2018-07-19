@@ -75,8 +75,8 @@ Let’s break the implementation into multiple phases:
 	* Deploy alongside pulsar / embedded with pulsar cluster
 6. Metrics
 	* Prometheus
-	* How long queries are taking, etc
-	* Number of requests per sec, etc..
+	* How long queries are taking, etc.
+	* Number of requests per sec, etc.
 7. System Columns
 	* Automatically generate columns such as publish time, event time, partitionId, etc for each table
 8. Integrate with pulsar CLI

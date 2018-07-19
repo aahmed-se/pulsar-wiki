@@ -24,6 +24,10 @@ We encourage to document any big change or feature or any addition to public use
 * [PIP 2: Non Persistent topic](https://github.com/apache/incubator-pulsar/wiki/PIP-2:-Non-Persistent-topic)
 * [PIP 1: Pulsar Proxy](https://github.com/apache/incubator-pulsar/wiki/PIP-1:-Pulsar-Proxy)
 
+## Contributor documentation
+
+ * [Release Candidate Validation](https://github.com/apache/incubator-pulsar/wiki/Release-Candidate-Validation)
+
 ## Committers documentation
 
  * [Create GPG keys to sign release artifacts](https://github.com/apache/incubator-pulsar/wiki/Create-GPG-keys-to-sign-release-artifacts)

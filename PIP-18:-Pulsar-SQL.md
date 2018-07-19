@@ -1,5 +1,5 @@
 * **Status**: In Progress
-* **Authors**: Jerry Peng
+* **Authors**: Jerry Peng, Matteo Merril
 * **Mailing List discussion**: 
 N/A
 * **Prototype**: https://github.com/jerrypeng/presto/tree/pulsar_connector

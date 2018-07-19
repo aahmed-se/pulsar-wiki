@@ -36,6 +36,79 @@ pulsar-io-twitter-<release>.nar
 $ bin/pulsar standalone
 ```
 
+when you started the standalone cluster, there are a few things to example:
+
+a) the standalone cluster should be able to locate all the connectors. you should be able to see following logging information.
+
+```shell
+Found connector ConnectorDefinition(name=kinesis, description=Kinesis sink connector, sourceClass=null, sinkClass=org.apache.pulsar.io.kinesis.KinesisSink) from /Users/sijie/tmp/apache-pulsar-2.1.0-incubating/./connectors/pulsar-io-kinesis-2.1.0-incubating.nar
+...
+Found connector ConnectorDefinition(name=cassandra, description=Writes data into Cassandra, sourceClass=null, sinkClass=org.apache.pulsar.io.cassandra.CassandraStringSink) from /Users/sijie/tmp/apache-pulsar-2.1.0-incubating/./connectors/pulsar-io-cassandra-2.1.0-incubating.nar
+...
+Found connector ConnectorDefinition(name=aerospike, description=Aerospike database sink, sourceClass=null, sinkClass=org.apache.pulsar.io.aerospike.AerospikeStringSink) from /Users/sijie/tmp/apache-pulsar-2.1.0-incubating/./connectors/pulsar-io-aerospike-2.1.0-incubating.nar
+```
+
+b) (since pulsar 2.1) the standalone should start bookkeeper table service as well.
+
+example output:
+
+```shell
+12:12:26.099 [main] INFO  org.apache.pulsar.zookeeper.LocalBookkeeperEnsemble - 'default' namespace for table service : namespace_name: "default"
+default_stream_conf {
+  key_type: HASH
+  min_num_ranges: 24
+  initial_num_ranges: 24
+  split_policy {
+    fixed_range_policy {
+      num_ranges: 2
+    }
+  }
+  rolling_policy {
+    size_policy {
+      max_segment_size: 134217728
+    }
+  }
+  retention_policy {
+    time_policy {
+      retention_minutes: -1
+    }
+  }
+}
+```
+
+c) functions worker is started correctly.
+
+example output:
+
+```shell
+12:12:31.647 [pulsar-external-listener-70-1] INFO  org.apache.pulsar.functions.worker.MembershipManager - Worker c-standalone-fw-localhost-6750:localhost:6750 became the leader.
+```
+
+b) sanity check before moving to next steps:
+
+```shell
+// check pulsar binary port is listened correctly
+$ telnet localhost 6650
+
+// check function cluster
+$ curl -s http://localhost:8080/admin/v2/functions/cluster
+// example output
+[{"workerId":"c-standalone-fw-localhost-6750","workerHostname":"localhost","port":6750}]
+
+// check brokers 
+$ curl -s http://localhost:8080/admin/v2/namespaces/public
+// example outoupt
+["public/default","public/functions"]
+
+// check connectors
+$ curl -s http://localhost:8080/admin/v2/functions/connectors
+// example output
+[{"name":"aerospike","description":"Aerospike database sink","sinkClass":"org.apache.pulsar.io.aerospike.AerospikeStringSink"},{"name":"cassandra","description":"Writes data into Cassandra","sinkClass":"org.apache.pulsar.io.cassandra.CassandraStringSink"},{"name":"kafka","description":"Kafka source and sink connector","sourceClass":"org.apache.pulsar.io.kafka.KafkaStringSource","sinkClass":"org.apache.pulsar.io.kafka.KafkaStringSink"},{"name":"kinesis","description":"Kinesis sink connector","sinkClass":"org.apache.pulsar.io.kinesis.KinesisSink"},{"name":"rabbitmq","description":"RabbitMQ source connector","sourceClass":"org.apache.pulsar.io.rabbitmq.RabbitMQSource"},{"name":"twitter","description":"Ingest data from Twitter firehose","sourceClass":"org.apache.pulsar.io.twitter.TwitterFireHose"}]
+
+// check table services
+$ telnet localhost 4181
+```
+
 2. Open another terminal to submit a Java Exclamation function.
 
 ```shell

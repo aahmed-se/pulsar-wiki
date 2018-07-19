@@ -2,6 +2,7 @@
   * [Download Binary Distributions](#download-the-binary-distributions)
   * [Validate Pub/Sub and Java Functions](#validate-pubsub-and-java-functions)
   * [Validate Connectors](#validate-connectors)
+  * [Validate Stateful Functions](#validate-stateful-functions)
 
 Here are some instructions for reviewing and validating a release candidate.
 
@@ -419,7 +420,7 @@ $ bin/pulsar-admin sink delete --tenant public --namespace default --name cassan
 "Deleted successfully"
 ```
 
-#### Validate Counter Functions
+#### Validate Stateful Functions
 
 Since Pulsar 2.1, Pulsar enables bookkeeper table service for stateful pulsar functions (as a developer preview).
 

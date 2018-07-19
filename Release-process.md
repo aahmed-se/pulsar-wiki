@@ -90,7 +90,7 @@ Inspect the artifacts:
  * Check that the `LICENSE` and `NOTICE` files cover all included jars (especially for the -bin package)
    - Use script to cross-validate `LICENSE` file with included jars: 
       ```
-      src/check-binary-license all/target/apache-pulsar-1.X.0-incubating-bin.tar.gz
+      src/check-binary-license distribution/server/target/apache-pulsar-1.x.0-incubating-bin.tar.gz
       ```
  * Run Apache RAT to verify the license headers in the `src` package:
  ```shell
@@ -100,6 +100,8 @@ Inspect the artifacts:
  ```shell
  bin/pulsar standalone
  ```
+
+* Use instructions in [Release-Candidate-Validation](Release-Candidate-Validation) to do some sanity checks on the produced binary distributions.
 
 ##### 3.1. Build RPM and DEB packages
 

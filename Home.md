@@ -5,7 +5,7 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
-* [PIP 18: Pulsar SQL](https://github.com/apache/incubator-pulsar/wiki/PIP-18:-Pulsar-SQL)
+* [PIP 19: Pulsar SQL](https://github.com/apache/incubator-pulsar/wiki/PIP-19:-Pulsar-SQL)
 * [PIP 17: Tiered storage for Pulsar topics](https://github.com/apache/incubator-pulsar/wiki/PIP-17:-Tiered-storage-for-Pulsar-topics)
 * [PIP 16: Pulsar "instance" terminology change](https://github.com/apache/incubator-pulsar/wiki/PIP-16:-Pulsar-%22instance%22-terminology-change)
 * [PIP 15: Pulsar Functions](https://github.com/apache/incubator-pulsar/wiki/PIP-15:-Pulsar-Functions)

@@ -1,6 +1,7 @@
 # Non-Persistent topic
 
  * **Status**: Implemented
+ * **Author**: [Matteo Merli](https://github.com/merlimat)
  * **Pull Request**: [#538](https://github.com/apache/incubator-pulsar/pull/538)
 * **Feature**: Experimental
 

@@ -1,6 +1,6 @@
 # PIP-16 Pulsar "instance" terminology change
 
-* **Status**: Proposal
+* **Status**: Adopted
 * **Authors**: Luc Perkins
 
 ## Background

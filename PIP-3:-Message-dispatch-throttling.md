@@ -1,6 +1,7 @@
 # Message dispatch throttling
 
  * **Status**: Implemented
+ * **Author**: [Rajan Dhabalia](https://github.com/rdhabalia)
  * **Pull Request**: [#634](https://github.com/apache/incubator-pulsar/pull/634)
 
 ## Motivation

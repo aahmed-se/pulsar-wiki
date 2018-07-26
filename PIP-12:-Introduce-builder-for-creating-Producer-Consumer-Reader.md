@@ -1,7 +1,7 @@
 
-* **Status**: Proposal
-* **Author**: Matteo Merli
-* **Pull Request**: [ ]
+* **Status**: Implemented
+* **Author**: [Matteo Merli](https://github.com/merlimat)
+* **Pull Request**: [#1089](https://github.com/apache/incubator-pulsar/pull/1089)
 * **Mailing List discussion**:
 
 ## Motivation

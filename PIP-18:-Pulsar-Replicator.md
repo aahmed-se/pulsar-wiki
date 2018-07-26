@@ -1,5 +1,10 @@
 # PIP-18: Pulsar Replicator
 
+* **Status**: Discarded, in favor of using Pulsar I/O connectors
+* **Author**: Rajan Dhabalia
+* **Pull Request**: [#1582](https://github.com/apache/incubator-pulsar/issues/1582)
+* **Discussion**: https://github.com/apache/incubator-pulsar/issues/1582
+
 ## Motivation
 
 Pulsar already supports geo-replication that persists messages across multiple clusters of pulsar instances. Therefore, client can set replication clusters for a topic, and pulsar broker internally takes care of replication to all the clusters. However, sometimes application may want to replicate the same published messages to other external systems which is not part of pulsar-eco system such as AWS-Kinesis, DynamoDB. Therefore, right now, client-application has to take this extra burden to publish same messages for pulsar and other external systems.

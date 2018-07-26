@@ -1,7 +1,7 @@
 # PIP-18: Pulsar Replicator
 
 * **Status**: Discarded, in favor of using Pulsar I/O connectors
-* **Author**: Rajan Dhabalia
+* **Author**: [Rajan Dhabalia](https://github.com/rdhabalia)
 * **Pull Request**: [#1582](https://github.com/apache/incubator-pulsar/issues/1582)
 * **Discussion**: https://github.com/apache/incubator-pulsar/issues/1582
 

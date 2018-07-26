@@ -1,3 +1,9 @@
+ * **Status**: Implemented
+ * **Author**: [Sanjeev Kulkarni](https://github.com/srkukarni), [Jerry Peng](https://github.com/jerrypeng), [Sijie Guo](https://github.com/sijie)
+ * **Pull Request**:
+   - [#1314](https://github.com/apache/incubator-pulsar/pull/1314)
+ * **Mailing List discussion**: 
+ * **Release**: 2.0.0
 
 ## Background
 

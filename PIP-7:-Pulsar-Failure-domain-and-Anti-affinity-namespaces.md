@@ -1,4 +1,5 @@
  * **Status**: Implemented
+ * **Author**: [Rajan Dhabalia](https://github.com/rdhabalia)
  * **Pull Request**: [#896](https://github.com/apache/incubator-pulsar/pull/896)
   * **Issue**: [#840](https://github.com/apache/incubator-pulsar/issues/840)
 

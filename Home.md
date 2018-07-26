@@ -35,7 +35,6 @@ We encourage to document any big change or feature or any addition to public use
 ## Contributor documentation
 
  * [Release Candidate Validation](https://github.com/apache/incubator-pulsar/wiki/Release-Candidate-Validation)
- * [[Documentation Contribution Guide]]
 
 ## Committers documentation
 

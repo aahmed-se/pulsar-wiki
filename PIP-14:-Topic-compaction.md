@@ -1,4 +1,4 @@
-* **Status**: Proposal
+* **Status**: Implemented
 * **Authors**: Ivan Kelly
 * **Top Level Issue **: https://github.com/apache/incubator-pulsar/issues/933
 * **Mailing List discussion**: http://mail-archives.apache.org/mod_mbox/incubator-pulsar-dev/201712.mbox/ajax/%3CCAJdLeK1_Sgoh_LtXwG0kFbw67ScsekziN6cQW25LC%3DzpeSa--Q%40mail.gmail.com%3E

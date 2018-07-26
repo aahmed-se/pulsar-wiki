@@ -1,6 +1,7 @@
 # Pulsar beyond 1M topics
 
  * **Status**: Implemented
+ * **Author**: [Rajan Dhabalia](https://github.com/rdhabalia)
  * **Pull Request**: [#903](https://github.com/apache/incubator-pulsar/pull/903)
 
 # Introduction

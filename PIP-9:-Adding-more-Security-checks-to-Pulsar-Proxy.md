@@ -1,6 +1,6 @@
 # PIP-9 Adding more Security checks to Pulsar Proxy
-**Status:** PR under review
-
+**Status:** Adopted
+**Author:** [Jai Asher](https://github.com/Jai1)
 **Pull Request:** [#1002](https://github.com/apache/incubator-pulsar/pull/1002)
 
 **Reference:** https://github.com/apache/incubator-pulsar/wiki/PIP-1:-Pulsar-Proxy

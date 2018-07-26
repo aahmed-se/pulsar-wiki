@@ -1,5 +1,6 @@
 # Pulsar End To End Encryption
  * **Status**: Implemented
+ * **Author**: [Rajan Dhabalia](https://github.com/rdhabalia)
  * **Issue**: [633](https://github.com/apache/incubator-pulsar/issues/633)
 
 ## Introduction

@@ -1,6 +1,9 @@
- * **Status**: Proposal
- * **Author**: Jia Zhai - Streamlio
- * **Pull Request**: []
+ * **Status**: Implemented
+ * **Author**: [Jia Zhai](https://github.com/zhaijack)
+ * **Pull Request**:
+   - [#1103](https://github.com/apache/incubator-pulsar/pull/1103)
+   - [#1165](https://github.com/apache/incubator-pulsar/pull/1165)
+   - [#1175](https://github.com/apache/incubator-pulsar/pull/1175)
  * **Mailing List discussion**: 
 
 

@@ -5,6 +5,10 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
+*Next Proposal Number: 20*
+
+### Accepted
+
 * [PIP 19: Pulsar SQL](https://github.com/apache/incubator-pulsar/wiki/PIP-19:-Pulsar-SQL)
 * [PIP 17: Tiered storage for Pulsar topics](https://github.com/apache/incubator-pulsar/wiki/PIP-17:-Tiered-storage-for-Pulsar-topics)
 * [PIP 16: Pulsar "instance" terminology change](https://github.com/apache/incubator-pulsar/wiki/PIP-16:-Pulsar-%22instance%22-terminology-change)
@@ -23,6 +27,10 @@ We encourage to document any big change or feature or any addition to public use
 * [PIP 3: Message dispatch throttling](https://github.com/apache/incubator-pulsar/wiki/PIP-3:-Message-dispatch-throttling)
 * [PIP 2: Non Persistent topic](https://github.com/apache/incubator-pulsar/wiki/PIP-2:-Non-Persistent-topic)
 * [PIP 1: Pulsar Proxy](https://github.com/apache/incubator-pulsar/wiki/PIP-1:-Pulsar-Proxy)
+
+### Discarded
+
+* [PIP 18: Pulsar Replicator](https://github.com/apache/incubator-pulsar/wiki/PIP-18:-Pulsar-Replicator)
 
 ## Contributor documentation
 

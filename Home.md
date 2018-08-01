@@ -19,7 +19,7 @@ We encourage to document any big change or feature or any addition to public use
 * [PIP 11: Short topic names](https://github.com/apache/incubator-pulsar/wiki/PIP-11:-Short-topic-names)
 * [PIP 10: Remove cluster for namespace and topic names](https://github.com/apache/incubator-pulsar/wiki/PIP-10:-Remove-cluster-for-namespace-and-topic-names)
 * [PIP 9: Adding more Security checks to Pulsar Proxy](https://github.com/apache/incubator-pulsar/wiki/PIP-9:-Adding-more-Security-checks-to-Pulsar-Proxy)
-* [PIP 8 Pulsar beyond 1M topics](https://github.com/apache/incubator-pulsar/wiki/PIP-8-Pulsar-beyond-1M-topics)
+* [PIP 8: Pulsar beyond 1M topics](https://github.com/apache/incubator-pulsar/wiki/PIP-8:-Pulsar-beyond-1M-topics)
 * [PIP 7: Pulsar Failure domain and Anti affinity namespaces](https://github.com/apache/incubator-pulsar/wiki/PIP-7:-Pulsar-Failure-domain-and-Anti-affinity-namespaces)
 * [PIP 6: Guaranteed Message Deduplication](https://github.com/apache/incubator-pulsar/wiki/PIP-6:-Guaranteed-Message-Deduplication)
 * [PIP 5: Event time](https://github.com/apache/incubator-pulsar/wiki/PIP-5:-Event-time)

@@ -18,7 +18,7 @@ This matrix is updated with Pulsar 2.1 release.
 | Consumer seek                             |  ✅   |  ✅  |    |   ✅    |     ❌     |
 | Multi-topics consumer                     |  ✅   |     |    |        |     ❌     |
 | Topics regex consumer                     |  ✅   |     |    |        |     ❌     |
-| Compacted topics                          |  ✅   |  ✅  |    |   ✅    |           |
+| Compacted topics                          |  ✅   |  ✅  |    |   ✅    |      ❌      |
 | User defined properties producer/consumer |  ✅   |     |    |        |     ❌     |
-| Reader hasMessageAvailable                |  ✅   |     |    |        |     ❌     |
+| Reader hasMessageAvailable                |  ✅   |  ✅   |    |   ✅     |     ❌     |
 | Hostname verification                     |  ✅   |     |    |        |     ❌     |

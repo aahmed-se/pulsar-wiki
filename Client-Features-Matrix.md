@@ -22,3 +22,15 @@ This matrix is updated with Pulsar 2.1 release.
 | User defined properties producer/consumer |  ✅   |     |    |        |     ❌     |
 | Reader hasMessageAvailable                |  ✅   |  ✅   |    |   ✅     |     ❌     |
 | Hostname verification                     |  ✅   |     |    |        |     ❌     |
+
+## In progress
+
+This matrix keeps the features that are already developed (or under developing) in master, but not yet released.
+
+
+| Feature                                   | Java | C++ | Go | Python | WebSocket |
+|:------------------------------------------|:----:|:---:|:--:|:------:|:---------:|
+| Multi-topics consumer                     |  ✅   |  ✅   |    |    ✅    |     ❌     |
+| Topics regex consumer                     |  ✅   |  [#2219](https://github.com/apache/incubator-pulsar/pull/2219)   |    |   [#2219](https://github.com/apache/incubator-pulsar/pull/2219)     |     ❌     |
+
+

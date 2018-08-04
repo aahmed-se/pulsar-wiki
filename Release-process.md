@@ -280,37 +280,109 @@ select the staging repository associated with the RC candidate that was approved
 will be like `orgapachepulsar-XYZ`. Select the repository and click on "Release". Artifacts 
 will now be made available on Maven central.
 
-#### 11. Update the site
+#### 11. Publish Docker Images
 
-Copy the `latest` documentation into a version specific folder.
+- a) Trigger the [pulsar-release-binaries](https://builds.apache.org/job/pulsar-release-binaries/) with the tag name.
+- b) once it is done, check https://hub.docker.com/r/apachepulsar/pulsar/tags/ to make sure the docker image is published.
+- c) try to run `docker pull apachepulsar/pulsar:<tag>` to fetch the image, run the docker in standalone mode and make sure the docker image is okay.
+
+#### 12. Publish Python Clients
+
+> ##### NOTES:
+> 
+> 1. you need to create an account on PyPI: https://pypi.org/project/pulsar-client/
+>
+> 2. ask Matteo or Sijie for adding you as a maintainer for pulsar-client on PyPI
+
+##### Linux
+
+There is a script that builds and packages the Python client inside Docker images.
+
+> make sure you run following command at the release tag!!
 
 ```shell
-git checkout -b asf-site origin/asf-site
-cd content/docs
-cp -r latest v1.X.0-incubating
-git add v1.X.0-incubating
-git commit -m 'Copying generated documentation for v1.X.0-incubating'
-git push origin asf-site
+$ pulsar-client-cpp/docker/build-wheels.sh
 ```
 
-In `master` branch, update the site configuration to add the new version.
+The wheel files will be left under `pulsar-client-cpp/python/wheelhouse`. Make sure all the files has `manylinux` in the filenames. Otherwise those files will not be able to upload to PyPI.
 
-In `site/_config.yml` :
+Run following command to push the built wheel files.
 
-```yaml
-# ...
-current_version: 1.X.0-incubating
-archived_releases:
-    - 1.19.0-incubating
-    - 1.20.0-incubating
-    ...
-    - 1.Y.0-incubating
-# ...
+```shell
+$ cd pulsar-client-cpp/python/wheelhouse
+
+$ twine upload pulsar_client-*.whl
 ```
 
-Commit the config change and submit a PR on Github.
+##### MacOS
 
-#### 12. Announce the release
+> ###### NOTES
+>
+> You need to install following softwares before proceeding:
+>
+> - [VirtualBox](https://www.virtualbox.org/)
+> - [VirtualBox Extension Pack]
+> - [Vagrant](https://www.vagrantup.com/)
+>
+> And make sure your laptop have enough disk spaces (> 30GB) since the build scripts
+> will download MacOS images, launch them in VirtualBox and build the python
+> scripts.
+
+Build the python scripts.
+
+```shell
+$ cd pulsar-client-cpp/python/pkg/osx/
+$ ./generate-all-wheel.sh
+```
+
+The wheel files will be generated at each platform directory under `pulsar-client-cpp/python/pkg/osx/`.
+Then you can run `twin upload` to upload those wheel files.
+
+If you don't have enough spaces, you can build the python wheel file platform by platform and remove the images under `~/.vagrant.d/boxes` between each run.
+
+#### 13. Update release notes
+
+Follow [this example](https://github.com/apache/incubator-pulsar/pull/2292) to add the release notes there.
+
+#### 14. Update the site
+
+> the website update always happen under `master` branch.
+
+1. Create a new branch off master
+
+```shell
+git checkout -b doc_release_<release-version>
+```
+
+2. Go to the website directory
+
+```shell
+cd site2/website
+```
+
+3. Cut a new version of the documentation.
+
+```shell
+yarn run version <release-version>
+```
+
+After this command, a directory `version-<release-version>` will be added under `site2/website/versioned_docs`. Then,
+
+```shell
+git add versioned_docs/version-<release-version>
+```
+
+4. Update `releases.json` file to add `<release-version>` to the top of the list.
+
+5. Update `Feature Matrix` section the the clients page `versioned_docs/version-<release-version>/getting-started-clients.md` to make it in-sync with the features available in the released version.
+
+6. Send out a PR request for review.
+
+7. Once the PR is approved and merged to master, trigger the [pulsar-website-build](https://builds.apache.org/job/pulsar-website-build/).
+
+8. Once the build is done, the new website should be automatically published. Open https://pulsar.apache.org in your browsers to verify all the changes are alive.
+
+#### 15. Announce the release
 
 Once the release artifacts are available in the Apache Mirrors and the website is updated,
 we need to announce the release.
@@ -352,3 +424,7 @@ stabilized in a manner consistent with other successful ASF projects. While
 incubation status is not necessarily a reflection of the completeness or stability
 of the code, it does indicate that the project has yet to be fully endorsed by the ASF.
 ```
+
+16. Write a blog post for the release (optional)
+
+It is encouraged to write a blog post to summarize the features introduced in this release. You can follow the example [here](https://github.com/apache/incubator-pulsar/pull/2308)

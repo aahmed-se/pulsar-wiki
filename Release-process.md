@@ -19,8 +19,12 @@ The steps for releasing are as follows:
 8. Run the vote
 9. Run the vote on Incubator
 10. Promote the release
-11. Update the site
-12. Announce the release
+11. Publish Docker Images
+12. Publish Python Clients
+13. Update release notes
+14. Update the site
+15. Announce the release
+16. Write a blog post for the release (optional)
 
 ## Steps in detail
 

@@ -1,7 +1,7 @@
 - **Status**: Proposed
 - **Author**: [Ivan Kelly](https://github.com/ivankelly)
 - **Pull Request**: -
-- **Mailing List discussion**: -
+- **Mailing List discussion**: https://lists.apache.org/thread.html/ac70badf3648cb4287a483b9ee75d7cf599126bba9e45f30acbb7ba4@%3Cdev.pulsar.apache.org%3E
 
 # Motivation
 
@@ -41,4 +41,4 @@ The following changes are needed.
 3. SecurityUtility.java should wrap all TrustManagers in a wrapper, that, after calling the parent method, checks the subject key identifier against the revoked list. The trust managers are used by both jetty and netty connections for negotiation (see [demo](https://github.com/ivankelly/incubator-pulsar/commit/216c0c9ea22fb8431c2c5f1c9f597183ee400981)).
 4. Each service watches the list, and on update checks all existing connections:
     - For netty, each TLS channel should be added to a ChannelGroup which we can iterate over. To check a channel, the peer cert can be retrieved by ```channel.getPipeline().getHandler(SslHandler.class).getEngine().getSession().getPeerCertificateChain()```.
-    - For jetty, all connections can be retrieved with ```getConnectedEndpoint()```. The ```Connection``` objects can be accessed from the returned list, and checked if they are instances of ```SSLConnection```. Once you have an ```SSLConnection```, the peer cert can be accessed via ```sslconn.getEngine().getSession().getPeerCerificateChain()```.
+    - For jetty, all connections can be retrieved with ```getConnectedEndpoint()```. The ```Connection``` objects can be accessed from the returned list, and checked if they are instances of ```SSLConnection```. Once you have an ```SSLConnection```, the peer cert can be accessed via ```sslconn.getEngine().getSession().getPeerCertificateChain()```.

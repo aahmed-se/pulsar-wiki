@@ -5,10 +5,11 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
-*Next Proposal Number: 20*
+*Next Proposal Number: 21*
 
 ### Accepted
 
+* [PIP 20: Mechanism to revoke TLS authentication](https://github.com/apache/incubator-pulsar/wiki/PIP-20:-Mechanism-to-revoke-TLS-authentication)
 * [PIP 19: Pulsar SQL](https://github.com/apache/incubator-pulsar/wiki/PIP-19:-Pulsar-SQL)
 * [PIP 17: Tiered storage for Pulsar topics](https://github.com/apache/incubator-pulsar/wiki/PIP-17:-Tiered-storage-for-Pulsar-topics)
 * [PIP 16: Pulsar "instance" terminology change](https://github.com/apache/incubator-pulsar/wiki/PIP-16:-Pulsar-%22instance%22-terminology-change)

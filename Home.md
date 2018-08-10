@@ -5,7 +5,7 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
-*Next Proposal Number: 21*
+*Next Proposal Number: 23*
 
 ### Proposed
 

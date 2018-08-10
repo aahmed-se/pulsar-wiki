@@ -7,6 +7,10 @@ We encourage to document any big change or feature or any addition to public use
 
 *Next Proposal Number: 21*
 
+### Proposed
+
+* [[PIP 22: Pulsar Dead Letter Topic]]
+
 ### Accepted
 
 * [PIP 20: Mechanism to revoke TLS authentication](https://github.com/apache/incubator-pulsar/wiki/PIP-20:-Mechanism-to-revoke-TLS-authentication)

@@ -10,6 +10,7 @@ We encourage to document any big change or feature or any addition to public use
 ### Proposed
 
 * [[PIP 22: Pulsar Dead Letter Topic]]
+* [[PIP 21: Pulsar Edge Component]]
 
 ### Accepted
 

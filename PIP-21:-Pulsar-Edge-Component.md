@@ -11,8 +11,8 @@ The current Pulsar function runtime environment is located on a Pulsar Broker in
 
 
 
- 
-Figure 1: Current State
+![Figure 1: Current State](images/pip21-image1.jpg) 
+
 
 
 Therefore, it would be desirable to create a software component that provides an environment for running Pulsar functions in a resource constrained environment. 
@@ -21,8 +21,7 @@ In the desired state, we would be able to host simple Pulsar functions on the Io
 
 Events can still be forwarded to the downstream Pulsar cluster for longer-term storage, and additional Pulsar function execution.
 
-
-Figure 2: Desired State 
+![Figure 2: Desired State](images/pip21-image2.jpg) 
 
 
 ## Requirements
@@ -44,8 +43,8 @@ The Pulsar Edge Component will wrap a standard pulsar client object, that it wil
 
 IoT applications would be used to capture the sensor data that is transmitted to the ioT gateway device over short-range protocols such as ZigBee, BlueTooth, convert it into the desired format, and publish it to the Pulsar Gateway object using the pub/sub API. 
 
+![Figure 3: Pulsar Edge Component Design](images/pip21-image3.jpg) 
 
-Figure 3: Pulsar Edge Component Design
 
 
 

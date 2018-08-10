@@ -1,5 +1,5 @@
 - **Status**: Proposed
-- **Author**: [David Kjerrumgaard](https://github.com/codelipenghui)
+- **Author**: [David Kjerrumgaard](https://github.com/orgs/streamlio/people/david-streamlio)
 - **Pull Request**: -
 - **Mailing List discussion**: 
 

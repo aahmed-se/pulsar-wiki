@@ -1,5 +1,5 @@
 - **Status**: Proposed
-- **Author**: [Penghui Li](https://github.com/codelipenghui)
+- **Author**: [Penghui Li](https://github.com/codelipenghui), [Jia Zhai](https://github.com/zhaijack)
 - **Pull Request**: -
 - **Mailing List discussion**: 
 

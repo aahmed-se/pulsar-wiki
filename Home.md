@@ -5,10 +5,11 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
-*Next Proposal Number: 23*
+*Next Proposal Number: 24*
 
 ### Proposed
 
+* [[PIP 23: Message Tracing By Interceptors]]
 * [[PIP 22: Pulsar Dead Letter Topic]]
 * [[PIP 21: Pulsar Edge Component]]
 

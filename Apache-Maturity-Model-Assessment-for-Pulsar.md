@@ -1,3 +1,19 @@
+## Overview
+
+This is an assessment of the Pulsar podling’s maturity, meant to help inform the decision (of the mentors, community, Incubator PMC and ASF Board of Directors) to graduate it as a top-level Apache project.
+
+It is based on the ASF project maturity model at https://community.apache.org/apache-way/apache-project-maturity-model.html
+
+
+## Status of this document
+
+All open items are updated with the latest status.
+
+## Maturity model assessment
+
+Mentors and community members are encouraged to contribute to this page and comment on it, the following table summarizes project’s self-assessment against the Apache Maturity Model.
+
+
 | ID | Description | Status |
 |:---|:------------|:-------|
 | ***Code*** | | |

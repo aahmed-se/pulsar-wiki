@@ -1,3 +1,4 @@
+
 ## Overview
 
 This is an assessment of the Pulsar podling’s maturity, meant to help inform the decision (of the mentors, community, Incubator PMC and ASF Board of Directors) to graduate it as a top-level Apache project.
@@ -19,9 +20,9 @@ Mentors and community members are encouraged to contribute to this page and comm
 | ***Code*** | | |
 | CD10     | The project produces Open Source software, for distribution to the public at no charge. | **YES** The project source code is licensed under the Apache License, version 2.0.                      |
 | CD20     | The project's code is easily discoverable and publicly accessible. | **YES** Linked from the website, available via GitBox  https://gitbox.apache.org/repos/asf?p=incubator-pulsar.git and https://github.com/apache/incubator-pulsar. |
-| CD30     | The code can be built in a reproducible way using widely available standard tools. | **YES** The build uses Apache Maven for Java code and CMake for C++ code. Continuous integration is used |
+| CD30     | The code can be built in a reproducible way using widely available standard tools. | **YES** The build uses Apache Maven for Java code and CMake for C++ code. Continuous integration is used to automate the testing and validation of new commits. |
 | CD40     | The full history of the project's code is available via a source code control system, in a way that allows any released version to be recreated. | **YES**  All the history of the project is available through Git. All releases are properly tagged. |
-| CD50     | The provenance of each line of code is established via the source code control system, in a reliable way based on strong authentication of the committer. When third-party contributions are committed, commit messages provide reliable information about the code provenance.  | **YES** The git repository is managed by Apache Infra. Only Pulsar committers have write access. All code is checked in after at least 2 committers have approved a pull-request. For 3rd party contribution, the commit message and logs will include all the details of author and committer. |
+| CD50     | The provenance of each line of code is established via the source code control system, in a reliable way based on strong authentication of the committer. When third-party contributions are committed, commit messages provide reliable information about the code provenance.  | **YES** The git repository is managed by Apache Infra. Only Pulsar committers have write access. All code is checked in after at least 2 committers have reviewed and approved a pull-request. For 3rd party contribution, the commit message and logs will include all the details of author and committer. |
 | ***Licenses and Copyright*** | | |
 | LC10     | The code is released under the Apache License, version 2.0. | **YES** Source distributions clearly state license. Convenience binaries clearly state license. |
 | LC20     | Libraries that are mandatory dependencies of the project's code do not create more restrictions than the Apache License does. | **YES** The list of mandatory dependencies have been reviewed to contain approved licenses only.|

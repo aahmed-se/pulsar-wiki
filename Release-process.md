@@ -86,8 +86,8 @@ mvn install
 
 After the build, there will be 2 generated artifacts:
 
- * `all/target/apache-pulsar-1.X.0-incubating-bin.tar.gz`
- * `all/target/apache-pulsar-1.X.0-incubating-src.tar.gz`
+ * `distribution/target/apache-pulsar-1.X.0-incubating-bin.tar.gz`
+ * `distribution/target/apache-pulsar-1.X.0-incubating-src.tar.gz`
 
 Inspect the artifacts:
  * Unpack both of them

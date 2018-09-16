@@ -9,12 +9,12 @@ We encourage to document any big change or feature or any addition to public use
 
 ### Proposed
 
-* [[PIP 23: Message Tracing By Interceptors]]
-* [[PIP 22: Pulsar Dead Letter Topic]]
 * [[PIP 21: Pulsar Edge Component]]
 
 ### Accepted
 
+* [[PIP 23: Message Tracing By Interceptors]]
+* [[PIP 22: Pulsar Dead Letter Topic]]
 * [PIP 20: Mechanism to revoke TLS authentication](https://github.com/apache/incubator-pulsar/wiki/PIP-20:-Mechanism-to-revoke-TLS-authentication)
 * [PIP 19: Pulsar SQL](https://github.com/apache/incubator-pulsar/wiki/PIP-19:-Pulsar-SQL)
 * [PIP 17: Tiered storage for Pulsar topics](https://github.com/apache/incubator-pulsar/wiki/PIP-17:-Tiered-storage-for-Pulsar-topics)

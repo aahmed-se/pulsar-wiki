@@ -1,7 +1,8 @@
-- **Status**: Proposed
+- **Status**: Done
 - **Author**: [Penghui Li](https://github.com/codelipenghui)
-- **Pull Request**: -
+- **Pull Request**: [#2508](https://github.com/apache/incubator-pulsar/pull/2508)
 - **Mailing List discussion**: 
+- **Release**: 2.2.0
 
 ## Motivation
 

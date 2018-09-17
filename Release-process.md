@@ -327,6 +327,7 @@ $ twine upload pulsar_client-*.whl
 > - [VirtualBox](https://www.virtualbox.org/)
 > - [VirtualBox Extension Pack]
 > - [Vagrant](https://www.vagrantup.com/)
+> - [Vagrant-scp](https://github.com/invernizzi/vagrant-scp)
 >
 > And make sure your laptop have enough disk spaces (> 30GB) since the build scripts
 > will download MacOS images, launch them in VirtualBox and build the python

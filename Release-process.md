@@ -4,7 +4,7 @@ how to perform a release.
 
 If you haven't already did it. Create and publish the GPG
 key with which you'll be signing the release artifacts.
-Instructions are at [Create GPG keys to sign release artifacts](https://github.com/apache/incubator-pulsar/wiki/Create-GPG-keys-to-sign-release-artifacts).
+Instructions are at [Create GPG keys to sign release artifacts](https://github.com/apache/pulsar/wiki/Create-GPG-keys-to-sign-release-artifacts).
 
 ## Making the release
 
@@ -17,7 +17,6 @@ The steps for releasing are as follows:
 6. Move master branch to next version
 7. Write release notes
 8. Run the vote
-9. Run the vote on Incubator
 10. Promote the release
 11. Publish Docker Images
 12. Publish Python Clients
@@ -30,27 +29,27 @@ The steps for releasing are as follows:
 
 #### 1. Create the release branch
 
-We are going to create a branch from `master` to `branch-v1.X`
+We are going to create a branch from `master` to `branch-v2.X`
 where the tag will be generated and where new fixes will be
 applied as part of the maintenance for the release.
 
 The branch needs only to be created when creating major releases,
 and not for patch releases.
 
-Eg: When creating `v1.19.0-incubating` release, will be creating
-the branch `branch-1.19`, but for for `v1.19.1-incubating` we
-would keep using the old `branch-1.19`.
+Eg: When creating `v2.3.0` release, will be creating
+the branch `branch-2.3`, but for for `v2.3.1` we
+would keep using the old `branch-2.3`.
 
-In these instructions, I'm referring to an fictitious release `1.X.0-incubating`. Change the release version in the examples
+In these instructions, I'm referring to an fictitious release `2.X.0`. Change the release version in the examples
 accordingly with the real version.
 
 It is recommended to create a fresh clone of the repository to avoid any local files to interfere
 in the process:
 
 ```shell
-git clone git@github.com:apache/incubator-pulsar.git
-cd incubator-pulsar
-git checkout -b branch-1.X origin/master
+git clone git@github.com:apache/pulsar.git
+cd pulsar
+git checkout -b branch-2.X origin/master
 ```
 
 #### 2. Update project version and tag
@@ -64,18 +63,19 @@ be the final one.
 
 ```shell
 # Bump to the release version
-mvn versions:set -DnewVersion=1.X.0-incubating
-mvn versions:set -DnewVersion=1.X.0-incubating -pl buildtools/
+mvn versions:set -DnewVersion=2.X.0
+mvn versions:set -DnewVersion=2.X.0 -pl buildtools
+mvn versions:set -DnewVersion=2.X.0 -pl pulsar-sql/presto-distribution
 
 # Commit
-git commit -m 'Release 1.X.0-incubating' -a
+git commit -m 'Release 2.X.0' -a
 
 # Create a "candidate" tag
-git tag -u $USER@apache.org v1.X.0-incubating-candidate-1 -m 'Release v1.X.0-incubating-candidate-1'
+git tag -u $USER@apache.org v2.X.0-candidate-1 -m 'Release v1.X.0-candidate-1'
 
 # Push both the branch and the tag to Github repo
-git push origin branch-1.X
-git push origin v1.X.0-incubating-candidate-1
+git push origin branch-2.X
+git push origin v2.X.0-candidate-1
 ```
 
 #### 3. Build and inspect the artifacts
@@ -84,17 +84,19 @@ git push origin v1.X.0-incubating-candidate-1
 mvn install
 ```
 
-After the build, there will be 2 generated artifacts:
+After the build, there will be 4 generated artifacts:
 
- * `distribution/server/target/apache-pulsar-1.X.0-incubating-bin.tar.gz`
- * `distribution/server/target/apache-pulsar-1.X.0-incubating-src.tar.gz`
+ * `distribution/server/target/apache-pulsar-2.X.0-bin.tar.gz`
+ * `distribution/server/target/apache-pulsar-2.X.0-src.tar.gz`
+ * `distribution/io/target/apache-pulsar-io-connectors-2.X.0-bin.tar.gz`
+ * `distribution/offloaders/target/apache-pulsar-offloaders-2.X.0-bin.tar.gz`
 
 Inspect the artifacts:
  * Unpack both of them
  * Check that the `LICENSE` and `NOTICE` files cover all included jars (especially for the -bin package)
-   - Use script to cross-validate `LICENSE` file with included jars: 
+   - Use script to cross-validate `LICENSE` file with included jars:
       ```
-      src/check-binary-license distribution/server/target/apache-pulsar-1.x.0-incubating-bin.tar.gz
+      src/check-binary-license distribution/server/target/apache-pulsar-2.x.0-bin.tar.gz
       ```
  * Run Apache RAT to verify the license headers in the `src` package:
  ```shell
@@ -115,7 +117,7 @@ pulsar-client-cpp/pkg/rpm/docker-build-rpm.sh
 pulsar-client-cpp/pkg/deb/docker-build-deb.sh
 ```
 
-This will leave the RPM/YUM and DEB repo files in `pulsar-client-cpp/pkg/rpm/RPMS/x86_64` and 
+This will leave the RPM/YUM and DEB repo files in `pulsar-client-cpp/pkg/rpm/RPMS/x86_64` and
 `pulsar-client-cpp/pkg/deb/BUILD/DEB` directory.
 
 #### 4. Sign and stage the artifacts
@@ -124,18 +126,18 @@ The `src` and `bin` artifacts need to be signed and uploaded to the dist SVN
 repository for staging.
 
 ```shell
-svn co https://dist.apache.org/repos/dist/dev/incubator/pulsar pulsar-dist-dev
+svn co https://dist.apache.org/repos/dist/dev/pulsar pulsar-dist-dev
 cd svn pulsar-dist-dev
 
 # '-candidate-1' needs to be incremented in case of multiple iteration in getting
 #    to the final release)
-svn mkdir pulsar-1.X.0-incubating-candidate-1
+svn mkdir pulsar-2.X.0-candidate-1
 
-cd pulsar-1.X.0-incubating-candidate-1
+cd pulsar-2.X.0-candidate-1
 $PULSAR_PATH/src/stage-release.sh .
 
 svn add *
-svn ci -m 'Staging artifacts and signature for Pulsar release 1.X.0-incubating'
+svn ci -m 'Staging artifacts and signature for Pulsar release 2.X.0'
 ```
 
 #### 5. Stage artifacts in maven
@@ -167,10 +169,11 @@ We need to move master version to next iteration `X + 1`.
 
 ```
 git checkout master
-mvn versions:set -DnewVersion=1.Y.0-incubating-SNAPSHOT
-mvn versions:set -DnewVersion=1.Y.0-incubating-SNAPSHOT -pl buildtools
+mvn versions:set -DnewVersion=2.Y.0-SNAPSHOT
+mvn versions:set -DnewVersion=2.Y.0-SNAPSHOT -pl buildtools
+mvn versions:set -DnewVersion=2.Y.0-SNAPSHOT -pl pulsar-sql/presto-distribution
 
-git commit -m 'Bumped version to 1.Y.0-incubating-SNAPSHOT' -a
+git commit -m 'Bumped version to 2.Y.0-SNAPSHOT' -a
 ```
 
 Since this needs to be merged in `master`, we need to follow the regular process
@@ -179,7 +182,7 @@ and create a Pull Request on github.
 #### 7. Write release notes
 
 Check the milestone in Github associated with the release.
-https://github.com/apache/incubator-pulsar/milestones?closed=1
+https://github.com/apache/pulsar/milestones?closed=1
 
 In the release item, add the list of most important changes that happened in the
 release and a link to the associated milestone, with the complete list of all the
@@ -190,82 +193,61 @@ changes.
 Send an email on the Pulsar Dev mailing list:
 
 ```
-To: dev@pulsar.incubator.apache.org
-Subject: [VOTE] Pulsar Release 1.X.0-incubating Candidate 1
+To: dev@pulsar.apache.org
+Subject: [VOTE] Pulsar Release 2.X.0 Candidate 1
 
-This is the first release candidate for Apache Pulsar, version 1.X.0-incubating.
+This is the first release candidate for Apache Pulsar, version 2.X.0.
 
 It fixes the following issues:
-https://github.com/apache/incubator-pulsar/milestone/8?closed=1
+https://github.com/apache/pulsar/milestone/8?closed=1
 
-*** Please download, test and vote on this release. This vote will stay open 
+*** Please download, test and vote on this release. This vote will stay open
 for at least 72 hours ***
 
 Note that we are voting upon the source (tag), binaries are provided for
 convenience.
 
 Source and binary files:
-https://dist.apache.org/repos/dist/dev/incubator/pulsar/pulsar-1.X.0-incubating-candidate-1/
+https://dist.apache.org/repos/dist/dev/pulsar/pulsar-2.X.0-candidate-1/
 
 SHA-1 checksums:
 
-028313cbbb24c5647e85a6df58a48d3c560aacc9  apache-pulsar-1.X.0-incubating-SNAPSHOT-bin.tar.gz
-f7cc55137281d5257e3c8127e1bc7016408834b1  apache-pulsar-1.x.0-incubating-SNAPSHOT-src.tar.gz
+028313cbbb24c5647e85a6df58a48d3c560aacc9  apache-pulsar-2.X.0-SNAPSHOT-bin.tar.gz
+f7cc55137281d5257e3c8127e1bc7016408834b1  apache-pulsar-2.x.0-SNAPSHOT-src.tar.gz
 
 Maven staging repo:
 https://repository.apache.org/content/repositories/orgapachepulsar-169/
 
 The tag to be voted upon:
-v1.X.0-incubating-candidate-1 (21f4a4cffefaa9391b79d79a7849da9c539af834)
-https://github.com/apache/incubator-pulsar/releases/tag/v1.X.0-incubating-candidate-1
+v2.X.0-candidate-1 (21f4a4cffefaa9391b79d79a7849da9c539af834)
+https://github.com/apache/pulsar/releases/tag/v2.X.0-candidate-1
 
 Pulsar's KEYS file containing PGP keys we use to sign the release:
-https://dist.apache.org/repos/dist/release/incubator/pulsar/KEYS
+https://dist.apache.org/repos/dist/release/pulsar/KEYS
 
 Please download the the source package, and follow the README to build
 and run the Pulsar standalone service.
 ```
 
-The vote should be open for at least 72 hours (3 days). Votes from Pulsar PPMC members
+The vote should be open for at least 72 hours (3 days). Votes from Pulsar PMC members
 will be considered binding, while anyone else is encouraged to verify the release and
 vote as well.
 
 If the release is approved here, we can then proceed to next step.
-
-#### 9. Run the vote on Incubator
-
-Since Pulsar is an incubator project, the release must be approved by the ASF Incubator PMC.
-
-Start a `VOTE` thread on the incubator mailing list:
-
-
-```
-To: general@incubator.apache.org
-Subject: [VOTE] Pulsar Release 1.X.0-incubating Candidate 1
-....
-```
-
-Add a link to the dev@ vote thread, you can get that through https://lists.apache.org/
-
-As before, the vote should be open for at least 72 hours and it should get at least 3 binding +1s
-from Incubator PMC members.
-
-If the outcome is successful, we can continue on the next step, otherwise we'll fix the issues
-and restart from step 2, this time issuing a `1.X.0-incubating-candidate-1` release.
 
 #### 10. Promote the release
 
 Create the final git tag:
 
 ```shell
-git tag -u $USER@apache.org v1.X.0-incubating -m 'Release v1.X.0-incubating'
-git push origin v1.X.0-incubating
+git tag -u $USER@apache.org v2.X.0 -m 'Release v2.X.0'
+git push origin v2.X.0
 ```
 
 Promote the artifacts on the release location:
 ```shell
-svn move https://dist.apache.org/repos/dist/dev/incubator/pulsar/pulsar-1.X.0-incubating-candidate-1 \
-         https://dist.apache.org/repos/dist/release/incubator/pulsar/pulsar-1.X.0-incubating
+svn move https://dist.apache.org/repos/dist/dev/pulsar/pulsar-2.X.0-candidate-1 \
+         https://dist.apache.org/repos/dist/release/pulsar/pulsar-2.X.0
 ```
 
 Remove the old releases (if any). We only need the latest release there, older releases are
@@ -273,15 +255,15 @@ available through the Apache archive:
 
 ```shell
 # Get the list of releases
-svn ls https://dist.apache.org/repos/dist/release/incubator/pulsar
+svn ls https://dist.apache.org/repos/dist/release/pulsar
 
 # Delete each release (except for the last one)
-svn rm https://dist.apache.org/repos/dist/release/incubator/pulsar/pulsar-1.Y.0-incubating
+svn rm https://dist.apache.org/repos/dist/release/pulsar/pulsar-2.Y.0
 ```
 
-Promote the Maven staging repository for release. Login to `https://repository.apache.org` and 
+Promote the Maven staging repository for release. Login to `https://repository.apache.org` and
 select the staging repository associated with the RC candidate that was approved. The naming
-will be like `orgapachepulsar-XYZ`. Select the repository and click on "Release". Artifacts 
+will be like `orgapachepulsar-XYZ`. Select the repository and click on "Release". Artifacts
 will now be made available on Maven central.
 
 #### 11. Publish Docker Images
@@ -293,7 +275,7 @@ will now be made available on Maven central.
 #### 12. Publish Python Clients
 
 > ##### NOTES:
-> 
+>
 > 1. you need to create an account on PyPI: https://pypi.org/project/pulsar-client/
 >
 > 2. ask Matteo or Sijie for adding you as a maintainer for pulsar-client on PyPI
@@ -347,7 +329,7 @@ If you don't have enough spaces, you can build the python wheel file platform by
 
 #### 13. Update release notes
 
-Follow [this example](https://github.com/apache/incubator-pulsar/pull/2292) to add the release notes there.
+Follow [this example](https://github.com/apache/pulsar/pull/2292) to add the release notes there.
 
 #### 14. Update the site
 
@@ -395,12 +377,10 @@ we need to announce the release.
 Send an email on these lines:
 
 ```
-To: dev@pulsar.incubator.apache.org, user@pulsar.incubator.apache.org, announce@apache.org
-Subject: [ANNOUNCE] Apache Pulsar 1.X.0-incubating released
+To: dev@pulsar.apache.org, user@pulsar.apache.org, announce@apache.org
+Subject: [ANNOUNCE] Apache Pulsar 2.X.0 released
 
-The Apache Pulsar team is proud to announce Apache Pulsar version 1.X.0-incubating.
-
-This is the first Pulsar release after entering the Apache Incubator.
+The Apache Pulsar team is proud to announce Apache Pulsar version 2.X.0.
 
 Pulsar is a highly scalable, low latency messaging platform running on
 commodity hardware. It provides simple pub-sub semantics over topics,
@@ -409,27 +389,20 @@ subscribers, and cross-datacenter replication.
 
 For Pulsar release details and downloads, visit:
 
-https://pulsar.incubator.apache.org/download
+https://pulsar.apache.org/download
 
 Release Notes are at:
-https://github.com/apache/incubator-pulsar/releases/tag/v1.X.0-incubating
+http://pulsar.apache.org/release-notes
 
 We would like to thank the contributors that made the release possible.
 
 Regards,
 
 The Pulsar Team
-
-DISCLAIMER:
-Apache Pulsar is an effort undergoing incubation at The Apache Software
-Foundation (ASF), sponsored by the Apache Incubator PMC. Incubation is
-required of all newly accepted projects until a further review indicates that
-the infrastructure, communications, and decision making process have
-stabilized in a manner consistent with other successful ASF projects. While
-incubation status is not necessarily a reflection of the completeness or stability
-of the code, it does indicate that the project has yet to be fully endorsed by the ASF.
 ```
 
 16. Write a blog post for the release (optional)
 
-It is encouraged to write a blog post to summarize the features introduced in this release. You can follow the example [here](https://github.com/apache/incubator-pulsar/pull/2308)
+It is encouraged to write a blog post to summarize the features introduced in this release,
+especially for feature releases.
+You can follow the example [here](https://github.com/apache/pulsar/pull/2308)

@@ -63,9 +63,7 @@ be the final one.
 
 ```shell
 # Bump to the release version
-mvn versions:set -DnewVersion=2.X.0
-mvn versions:set -DnewVersion=2.X.0 -pl buildtools
-mvn versions:set -DnewVersion=2.X.0 -pl pulsar-sql/presto-distribution
+./src/set-project-version.sh 2.X.0
 
 # Commit
 git commit -m 'Release 2.X.0' -a
@@ -169,9 +167,7 @@ We need to move master version to next iteration `X + 1`.
 
 ```
 git checkout master
-mvn versions:set -DnewVersion=2.Y.0-SNAPSHOT
-mvn versions:set -DnewVersion=2.Y.0-SNAPSHOT -pl buildtools
-mvn versions:set -DnewVersion=2.Y.0-SNAPSHOT -pl pulsar-sql/presto-distribution
+./src/set-project-version.sh 2.Y.0-SNAPSHOT
 
 git commit -m 'Bumped version to 2.Y.0-SNAPSHOT' -a
 ```

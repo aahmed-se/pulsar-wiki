@@ -71,7 +71,7 @@ mvn versions:set -DnewVersion=2.X.0 -pl pulsar-sql/presto-distribution
 git commit -m 'Release 2.X.0' -a
 
 # Create a "candidate" tag
-git tag -u $USER@apache.org v2.X.0-candidate-1 -m 'Release v1.X.0-candidate-1'
+git tag -u $USER@apache.org v2.X.0-candidate-1 -m 'Release v2.X.0-candidate-1'
 
 # Push both the branch and the tag to Github repo
 git push origin branch-2.X

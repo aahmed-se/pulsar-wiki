@@ -102,7 +102,7 @@ b) sanity check before moving to next steps:
 $ telnet localhost 6650
 
 // check function cluster
-$ curl -s http://localhost:8080/admin/v2/functions/cluster
+$ curl -s http://localhost:8080/admin/v2/worker/cluster
 // example output
 [{"workerId":"c-standalone-fw-localhost-6750","workerHostname":"localhost","port":6750}]
 

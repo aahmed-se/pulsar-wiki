@@ -565,13 +565,13 @@ a) install go
 b) get pulsar go client
 
 ```shell
-# go get -u github.com/apache/incubator-pulsar/pulsar-client-go/pulsar
+# go get -u github.com/apache/pulsar/pulsar-client-go/pulsar
 ```
 
 c) build an example
 
 ```shell
-# cd ~/go/src/github.com/apache/incubator-pulsar/pulsar-client-go/examples/producer/
+# cd ~/go/src/github.com/apache/pulsar/pulsar-client-go/examples/producer/
 # go build .
 # ls
 producer  producer.go
@@ -594,14 +594,14 @@ in ubuntu container, go to directory `/pulsar`
 [root@e6c29e2b70a9 pulsar]# ls
 ```
 
-2. Install RPM in the centos container
+2. Install DEB in the centos container
 
 ```shell
 # apt install ./apache-pulsar-client.deb
 # apt install ./apache-pulsar-client-dev.deb
 ```
 
-3. Build the go client to validate the RPM package.
+3. Build the go client to validate the DEB package.
 
 a) install go
 
@@ -619,13 +619,13 @@ a) install go
 b) get pulsar go client
 
 ```shell
-# go get -u github.com/apache/incubator-pulsar/pulsar-client-go/pulsar
+# go get -u github.com/apache/pulsar/pulsar-client-go/pulsar
 ```
 
 c) build an example
 
 ```shell
-# cd ~/go/src/github.com/apache/incubator-pulsar/pulsar-client-go/examples/producer/
+# cd ~/go/src/github.com/apache/pulsar/pulsar-client-go/examples/producer/
 # go build .
 # ls
 producer  producer.go

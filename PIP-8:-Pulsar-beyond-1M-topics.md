@@ -1,7 +1,6 @@
 # Pulsar beyond 1M topics
 
  * **Status**: Implemented
- * **Author**: [Rajan Dhabalia](https://github.com/rdhabalia)
  * **Pull Request**: [#903](https://github.com/apache/incubator-pulsar/pull/903)
 
 # Introduction
@@ -60,6 +59,44 @@ This means that we will need to create a new peer group URL.
 Existing clients will then need to update their URL settings to the peer group URL. During the upgrade period, both URLs, - the new peer group URL and the existing local cluster URL - will front end the same group of brokers; the existing cluster brokers. After the clients change the setting to the peer group URL, the peer group URL can front-end both set of brokers, from the existing local cluster and the new cluster.
 
 Strictly speaking, this client setting change is not required; the only drawback to not doing this is that all lookups will always end up in the existing local cluster. 
+
+## How to setup peer-clusters
+If each region has multiple pulsar clusters setup then we can configure peer-clusters that exist into same region.
+
+eg:
+
+**1. Setup Pulsar clusters in each region:**
+
+We have two regions `us-west` and `us-east`, and each region has 3 pulsar clusters setup.
+Pulsar clusters setup in `us-west` region: `us-west-1`, `us-west-2`, `us-west-3`
+```
+bin/pulsar-admin clusters create us-west-1 --url http://pulsar.us-west-1.com
+bin/pulsar-admin clusters create us-west-2 --url http://pulsar.us-west-2.com
+bin/pulsar-admin clusters create us-west-3 --url http://pulsar.us-west-3.com
+```
+
+Pulsar clusters setup in `us-east` region: `us-east-1`, `us-east-2`, `us-east-3`
+```
+bin/pulsar-admin clusters create us-east-1 --url http://pulsar.us-east-1.com
+bin/pulsar-admin clusters create us-east-2 --url http://pulsar.us-east-2.com
+bin/pulsar-admin clusters create us-east-3 --url http://pulsar.us-east-3.com
+```
+
+**2. Configure peer-clusters which have been setup in the same region**
+
+a.  Setup `us-west-2` and `us-west-3` as peer-clusters of `us-west-1`. So, if `us-west-1` receives lookup request for namespace that would be owned by any peer-cluster then `us-west-1` can redirect that lookup request to appropriate cluster.
+
+`bin/pulsar-admin clusters update-peer-clusters us-west-1 --peer-clusters us-west-2,us-west-3`
+
+b. Setup `us-east-2` and `us-east-3` as peer-clusters of `us-east-1`. 
+
+`bin/pulsar-admin clusters update-peer-clusters us-east-1 --peer-clusters us-east-2,us-east-3`
+
+**3. Create namespace with geo-replication enabled**
+
+`bin/pulsar-admin namespaces create sample/global-ns -c us-west-3,us-east-3`
+
+Now, if `us-west-1` receives lookup request for namespace `sample/global-ns` then `us-west-1` knows about its peer-cluster `us-west-3` and it redirects lookup to `us-west-3` so, `us-west-3` can serve all the topics under that namespace. Same applies to `us-east` peer-clusters as well.
 
 
 

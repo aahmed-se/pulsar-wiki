@@ -5,10 +5,11 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
-*Next Proposal Number: 24*
+*Next Proposal Number: 27*
 
 ### Proposed
 
+* [[PIP 26: Delayed Message Delivery]]
 * [[PIP 25: Token based authentication]]
 * [[PIP 24: Simplify memory settings]]
 * [[PIP 21: Pulsar Edge Component]]

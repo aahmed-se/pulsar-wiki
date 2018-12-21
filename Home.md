@@ -9,7 +9,7 @@ We encourage to document any big change or feature or any addition to public use
 
 ### Proposed
 
-* [[PIP 27: Improve github pull request template]]
+* [[PIP 27: Add checklist in github pull request template]]
 * [[PIP 26: Delayed Message Delivery]]
 * [[PIP 25: Token based authentication]]
 * [[PIP 24: Simplify memory settings]]

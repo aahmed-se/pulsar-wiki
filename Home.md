@@ -5,10 +5,11 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
-*Next Proposal Number: 27*
+*Next Proposal Number: 28*
 
 ### Proposed
 
+* [[PIP 27: Improve github pull request template]]
 * [[PIP 26: Delayed Message Delivery]]
 * [[PIP 25: Token based authentication]]
 * [[PIP 24: Simplify memory settings]]

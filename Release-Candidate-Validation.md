@@ -559,6 +559,7 @@ Updating / installing...
 a) install go
 
 ```shell
+# yum install -y epel-release
 # yum install -y go git
 ```
 

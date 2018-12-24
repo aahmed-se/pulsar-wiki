@@ -5,10 +5,11 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
-*Next Proposal Number: 28*
+*Next Proposal Number: 29*
 
 ### Proposed
 
+* [[PIP 28: Improve pulsar proxy log messages]]
 * [[PIP 27: Add checklist in github pull request template]]
 * [[PIP 26: Delayed Message Delivery]]
 * [[PIP 25: Token based authentication]]

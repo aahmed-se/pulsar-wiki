@@ -1,5 +1,5 @@
 * Status: **discussion**
-* Author: Samuel Sun
+* Author: [Samuel Sun](https://github.com/foreversunyao)
 * Pull Request: 
 * Mailing List Discussion: 
 * Release: N/A

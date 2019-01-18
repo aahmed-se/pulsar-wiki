@@ -22,6 +22,7 @@ This matrix is updated with Pulsar 2.1 release.
 | User defined properties producer/consumer |  ✅   |     |    |        |     ❌     |
 | Reader hasMessageAvailable                |  ✅   |  ✅   |    |   ✅     |     ❌     |
 | Hostname verification                     |  ✅   |     |    |        |     ❌     |
+| Multi Hosts Service Url support           |       |      |    |        |            |
 
 ## In progress
 

@@ -2,7 +2,7 @@
 
 # Pulsar client feature matrix
 
-This matrix is updated with Pulsar 2.1 release.
+This matrix is updated with Pulsar 2.3.0 release.
 
 | Feature                                   | Java | C++ | Go | Python | WebSocket |
 |:------------------------------------------|:----:|:---:|:--:|:------:|:---------:|
@@ -14,15 +14,15 @@ This matrix is updated with Pulsar 2.1 release.
 | Reader API                                |  ✅   |  ✅  | ✅  |   ✅    |     ✅     |
 | Proxy Support                             |  ✅   |  ✅  | ✅  |   ✅    |     ✅     |
 | Effectively-Once                          |  ✅   |  ✅  | ✅  |   ✅    |     ❌     |
-| Schema                                    |  ✅   |     |    |        |     ❌     |
-| Consumer seek                             |  ✅   |  ✅  |    |   ✅    |     ❌     |
-| Multi-topics consumer                     |  ✅   |     |    |        |     ❌     |
-| Topics regex consumer                     |  ✅   |     |    |        |     ❌     |
-| Compacted topics                          |  ✅   |  ✅  |    |   ✅    |      ❌      |
-| User defined properties producer/consumer |  ✅   |     |    |        |     ❌     |
-| Reader hasMessageAvailable                |  ✅   |  ✅   |    |   ✅     |     ❌     |
-| Hostname verification                     |  ✅   |     |    |        |     ❌     |
-| Multi Hosts Service Url support           |       |      |    |        |            |
+| Schema                                    |  ✅   |  ✅   |  ✅  |        |     ❌     |
+| Consumer seek                             |  ✅   |  ✅  | ✅   |   ✅    |     ❌     |
+| Multi-topics consumer                     |  ✅   |  ✅   |  ✅  |        |     ❌     |
+| Topics regex consumer                     |  ✅   |  ✅   |  ✅  |        |     ❌     |
+| Compacted topics                          |  ✅   |  ✅  |  ✅  |   ✅    |      ❌      |
+| User defined properties producer/consumer |  ✅   |  ✅   |    |  ✅      |     ❌     |
+| Reader hasMessageAvailable                |  ✅   |  ✅   | ✅   |   ✅     |     ❌     |
+| Hostname verification                     |  ✅   |  ✅   |  ✅  |    ✅    |     ❌     |
+| Multi Hosts Service Url support           |  ✅     |      |    |        |            |
 
 ## In progress
 

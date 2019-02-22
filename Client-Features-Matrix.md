@@ -14,10 +14,10 @@ This matrix is updated with Pulsar 2.3.0 release.
 | Reader API                                |  ✅   |  ✅  | ✅  |   ✅    |     ✅     |
 | Proxy Support                             |  ✅   |  ✅  | ✅  |   ✅    |     ✅     |
 | Effectively-Once                          |  ✅   |  ✅  | ✅  |   ✅    |     ❌     |
-| Schema                                    |  ✅   |  ✅   |  ✅  |        |     ❌     |
+| Schema                                    |  ✅   |  ✅   |    |    ✅    |     ❌     |
 | Consumer seek                             |  ✅   |  ✅  | ✅   |   ✅    |     ❌     |
-| Multi-topics consumer                     |  ✅   |  ✅   |  ✅  |        |     ❌     |
-| Topics regex consumer                     |  ✅   |  ✅   |  ✅  |        |     ❌     |
+| Multi-topics consumer                     |  ✅   |  ✅   |  ✅  |  ✅      |     ❌     |
+| Topics regex consumer                     |  ✅   |  ✅   |  ✅  |  ✅      |     ❌     |
 | Compacted topics                          |  ✅   |  ✅  |  ✅  |   ✅    |      ❌      |
 | User defined properties producer/consumer |  ✅   |  ✅   |    |  ✅      |     ❌     |
 | Reader hasMessageAvailable                |  ✅   |  ✅   | ✅   |   ✅     |     ❌     |

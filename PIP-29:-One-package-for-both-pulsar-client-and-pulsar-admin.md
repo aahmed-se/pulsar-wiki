@@ -1,8 +1,8 @@
-* Status: **discussion**
+* Status: **done**
 * Author: [Sijie Guo](https://github.com/sijie)
-* Pull Request: 
+* Pull Request: [#3662](https://github.com/apache/pulsar/pull/3662)
 * Mailing List Discussion: 
-* Release: N/A
+* Release: 2.4.0
 
 ## Motivation
 

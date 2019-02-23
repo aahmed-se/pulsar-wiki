@@ -1,7 +1,8 @@
-* **Status**: Proposal
+* **Status**: Done
 * **Author**: [Matteo Merli](https://github.com/merlimat)
-* **Pull Request**:
+* **Pull Request**: [#2888](https://github.com/apache/pulsar/pull/2888)
 * **Mailing List discussion**:
+* **Release**: 2.3.0
 
 
 ## Motivation

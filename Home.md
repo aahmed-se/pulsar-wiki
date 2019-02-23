@@ -9,16 +9,16 @@ We encourage to document any big change or feature or any addition to public use
 
 ### Proposed
 
-* [[PIP 29: One package for both pulsar-client and pulsar-admin]]
 * [[PIP 28: Pulsar Proxy Gateway Improvement]]
-* [[PIP 27: Add checklist in github pull request template]]
 * [[PIP 26: Delayed Message Delivery]]
-* [[PIP 25: Token based authentication]]
-* [[PIP 24: Simplify memory settings]]
 * [[PIP 21: Pulsar Edge Component]]
 
 ### Accepted
 
+* [[PIP 29: One package for both pulsar-client and pulsar-admin]]
+* [[PIP 27: Add checklist in github pull request template]]
+* [[PIP 25: Token based authentication]]
+* [[PIP 24: Simplify memory settings]]
 * [[PIP 23: Message Tracing By Interceptors]]
 * [[PIP 22: Pulsar Dead Letter Topic]]
 * [PIP 20: Mechanism to revoke TLS authentication](https://github.com/apache/incubator-pulsar/wiki/PIP-20:-Mechanism-to-revoke-TLS-authentication)

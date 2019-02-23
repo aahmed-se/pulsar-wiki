@@ -1,6 +1,7 @@
+
 * **Status**: Discussing
 * **Author**: Jia Zhai
-* **Pull Request**: 
+* **Pull Request**: https://github.com/apache/pulsar/pull/3677
 * **Mailing List discussion**:
 * **Release**: 
 
@@ -66,7 +67,7 @@ message CommandConnected {
 #### setCommandData changes in `AuthenticationDataSource` and `AuthenticationDataProvider`:
 
 When establish connection(between client and broker), in each connection, Broker side will have a [AuthenticationDataSource](https://github.com/apache/pulsar/blob/master/pulsar-broker-common/src/main/java/org/apache/pulsar/broker/authentication/AuthenticationDataSource.java), and Client side will have a 
-[AuthenticationProvider.java](https://github.com/apache/pulsar/blob/master/pulsar-broker-common/src/main/java/org/apache/pulsar/broker/authentication/AuthenticationProvider.java). They both have a `getCommandData` method, which get command data from proto command.
+[AuthenticationDataProvider.java](https://github.com/apache/pulsar/blob/master/pulsar-broker-common/src/main/java/org/apache/pulsar/broker/authentication/AuthenticationDataProvider.java). They both have a `getCommandData` method, which get command data from proto command.
 To achieve the mutual authn, we need a method `authenticate`, which instead `getCommandData` but will compute use passed in data and return evaluated and challenged data back to peer.
 
 And since in PulsarApi.proto, we store auth data as bytes in [CommandConnected](https://github.com/apache/pulsar/blob/master/pulsar-common/src/main/proto/PulsarApi.proto#L197) and `CommandConnected` command, and in [SaslServer](https://docs.oracle.com/javase/7/docs/api/javax/security/sasl/SaslServer.html) and [SaslClient](https://docs.oracle.com/javase/7/docs/api/javax/security/sasl/SaslClient.html), it do the valuate and challenge also use bytes, like this:
@@ -78,7 +79,7 @@ It would be better to use byte[] in method `authenticate`, this could avoid the 
 each time. 
 
 
-Client change in: [AuthenticationProvider.java](https://github.com/apache/pulsar/blob/master/pulsar-broker-common/src/main/java/org/apache/pulsar/broker/authentication/AuthenticationProvider.java)
+Client change in: [AuthenticationDataProvider](https://github.com/apache/pulsar/blob/master/pulsar-client-api/src/main/java/org/apache/pulsar/client/api/AuthenticationDataProvider.java) 
 
 ```
     /**
@@ -166,7 +167,7 @@ interface AuthState {
 }
 ```
 
-Then add a `newAuthState` in the AuthenticationProvider. The default implementation can be the `OneStageAuthState`, It can be shared across existing authentication providers. 
+Then add a `newAuthState` in the [AuthenticationProvider](https://github.com/apache/pulsar/blob/master/pulsar-broker-common/src/main/java/org/apache/pulsar/broker/authentication/AuthenticationProvider.java). The default implementation can be the `OneStageAuthState`, It can be shared across existing authentication providers. 
 
 
 So the implementation in serverCnx can be very simple:
@@ -191,4 +192,21 @@ For the current existing authentication providers, implement a common OneStageAu
 For the mutual authenciation provider, like SASL, implement a SaslAuthState.
 This would produce a clean interface between AuthenticationProvider and Brokers and avoiding add Sasl specific logic in ServerCnx.
 
-To reference a more detailed changes at [here](https://github.com/apache/pulsar/compare/master...jiazhai:pip_auth)
+
+Besides this in [AuthenticationProvider](https://github.com/apache/pulsar/blob/master/pulsar-broker-common/src/main/java/org/apache/pulsar/broker/authentication/AuthenticationProvider.java), it need a method `getAuthDataSource()`, which get a specific [AuthenticationDataSource](https://github.com/apache/pulsar/blob/master/pulsar-broker-common/src/main/java/org/apache/pulsar/broker/authentication/AuthenticationDataSource.java) stands for a connection in broker:
+
+```
+    /**
+     * Get/Create an authentication data provider which provides the data that this broker will be sent to the client.
+     * Some authentication method need to auth between each client channel.
+     */
+    default AuthenticationDataSource getAuthDataSource() throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    default AuthenticationState newAuthState(AuthenticationDataSource authenticationDataSource) {
+        return new OneStageAuthenticationState(authenticationDataSource, this);
+    }
+```
+
+To reference a more detailed changes at [here](https://github.com/apache/pulsar/pull/3677)

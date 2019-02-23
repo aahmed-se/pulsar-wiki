@@ -1,7 +1,8 @@
-* **Status**: Proposal
+* **Status**: Accepted
 * **Author**: [Matteo Merli](https://github.com/merlimat)
 * **Pull Request**:
 * **Mailing List discussion**:
+* **Release**: 2.3.0
 
 
 ## Motivation

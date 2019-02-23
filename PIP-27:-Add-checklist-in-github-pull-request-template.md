@@ -1,5 +1,5 @@
 # PIP-27: Add checklist in github pull request template
-* Status: Proposed
+* Status: Accepted
 * Author: [Sijie Guo](https://github.com/sijie)
 * Pull Request: N/A
 * Mailing List Discussion: N/A

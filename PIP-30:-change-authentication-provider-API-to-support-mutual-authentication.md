@@ -155,9 +155,7 @@ An `AuthState` basically is holding the authentication state, tell broker whethe
 
 ```
 interface AuthState {
-    AuthenticationData getAuthData();
     String getAuthRole();
-
 
     /**
       * Returns null if authentication has completed, and no auth data is required to send back to client.
@@ -166,7 +164,6 @@ interface AuthState {
     byte[] authenticate(byte[] authData);
 
     boolean isComplete();
-
 }
 ```
 

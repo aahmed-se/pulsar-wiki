@@ -158,11 +158,14 @@ interface AuthState {
     AuthenticationData getAuthData();
     String getAuthRole();
 
+
     /**
       * Returns null if authentication has completed, and no auth data is required to send back to client.
       * Returns the auth data back to client, if authentication has not completed.
       */
     byte[] authenticate(byte[] authData);
+
+    boolean isComplete();
 
 }
 ```
@@ -177,9 +180,8 @@ AuthState authState = authenticationProvider.newAuthState();
 
 byte[] clientAuthData = connect.getAuthData().toByteArray();
 byte[] brokerAuthData = authState.authenticate(clientAuthData);
-if (null == brokerAuthData) {
+if (authState.isComplete()) {
      // authentication has completed.
-     authData = authState.getAuthenticateData();
      authRole = authState.getAuthRole();
      // we are done here
 } else {

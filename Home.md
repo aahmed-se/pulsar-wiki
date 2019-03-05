@@ -5,9 +5,10 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
-*Next Proposal Number: 31*
+*Next Proposal Number: 32*
 
 ### Proposed
+* [[PIP 31: Transaction Support]]
 * [[PIP 30: change authentication provider API to support mutual authentication]]
 * [[PIP 28: Pulsar Proxy Gateway Improvement]]
 * [[PIP 26: Delayed Message Delivery]]

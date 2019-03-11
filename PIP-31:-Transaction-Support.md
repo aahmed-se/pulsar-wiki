@@ -4,5 +4,4 @@
 * **Mailing List discussion**:
 * **Release**: 
 
-
-[The design proposal is coming]
+Design Proposal: https://docs.google.com/document/d/145VYp09JKTw9jAT-7yNyFU255FptB2_B2Fye100ZXDI/edit#heading=h.bm5ainqxosrx

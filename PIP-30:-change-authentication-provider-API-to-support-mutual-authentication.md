@@ -1,9 +1,9 @@
 
-* **Status**: Discussing
+* **Status**: Implemented
 * **Author**: Jia Zhai
 * **Pull Request**: https://github.com/apache/pulsar/pull/3677
 * **Mailing List discussion**:
-* **Release**: 
+* **Release**: 2.4.0
 
 
 ## Motivation

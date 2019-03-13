@@ -16,20 +16,25 @@ So this PIP is try to discuss the interface changes to support mutual authentica
 
 In Pulsar, authentication is happened when a new connection is creating between client and broker. When connecting, Client sends authentication data to Broker by `CommandConnect`, and Broker do the authentication and once success send command `CommandConnected` back to client.
 
-In PulsarApi.proto, [CommandConnect](https://github.com/apache/pulsar/blob/master/pulsar-common/src/main/proto/PulsarApi.proto#L173), it contains `auth_method_name` and `auth_data` fields.  But broker no need to send auth data to client, so CommandConnected not contains auth data.
+In PulsarApi.proto, [CommandConnect](https://github.com/apache/pulsar/blob/master/pulsar-common/src/main/proto/PulsarApi.proto#L173), it contains `auth_method_name` and `auth_data` fields.  But broker no need to send auth data to client, so add new command CommandAuthResponse and CommandAuthChallenge to carry the data between client and broker.
 
 ```
-message CommandConnect {
-	required string client_version = 1;
-	optional AuthMethod auth_method = 2; // Deprecated. Use "auth_method_name" instead.
-	optional string auth_method_name = 5;
-	optional bytes auth_data = 3;
-	…
+message CommandAuthResponse {
+	optional string client_version = 1;
+	optional AuthData response = 2;
+	optional int32 protocol_version = 3 [default = 0];
 }
 
-message CommandConnected {
-	required string server_version = 1;
-	optional int32 protocol_version = 2 [default = 0];
+message CommandAuthChallenge {
+	optional string server_version = 1;
+	optional AuthData challenge = 2;
+	optional int32 protocol_version = 3 [default = 0];
+}
+
+// To support mutual authentication type, such as Sasl, reuse this command to mutual auth.
+message AuthData {
+	optional string auth_method_name = 1;
+	optional bytes auth_data = 2;
 }
 ```
 
@@ -37,30 +42,19 @@ The propose is to reuse these 2 commands related to connecting and auth, and als
 
 A basic logic for the mutual authentication is like this :
 
-1, Client side newConnectCommand(authDataClient) and send to Broker;
+1, Client side newConnectCommand(init auth) and send to Broker;
 2, Broker side handleConnect(authDataClient),  do the auth in Broker side, and get authDataBroker.
 - If auth is complete Broker.newConnected(), finish the auth, and send command back to Client.
-- If auth is not complete, Broker.newConnecting(authDataBroker) and send command back to Client.
+- If auth is not complete, Broker.newAuthChallenge(authDataBroker) and send command back to Client.
 3, Client side
 - If received Connected command, complete the auth, and connection established. 
-- If received Connecting command, do the auth with authDataBroker, and get authDataClient, then send connect command back to Broker. Broker will repeat the process of step 2 until auth complete.
+- If received AuthChallenge command, do the auth with authDataBroker, and get authDataClient, then send AuthResponse back to Broker. Broker will repeat the process of step 2 until auth complete.
 
 
 ## Changes
 
 ### Proto
-In PulsarApi.proto, [CommandConnected](https://github.com/apache/pulsar/blob/master/pulsar-common/src/main/proto/PulsarApi.proto#L197) need to add auth data fields. So Broker could reuse this command to send auth data back to Client.
 
-```
-message CommandConnected {
-	required string server_version = 1;
-	optional int32 protocol_version = 2 [default = 0];
-
-	// To support mutual authentication type, such as Sasl, reuse this command to do mutual auth.
-	optional string auth_method_name = 3;
-	optional bytes auth_data = 4;
-}
-```
 
 ### API changes
 

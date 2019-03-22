@@ -8,6 +8,7 @@ We encourage to document any big change or feature or any addition to public use
 *Next Proposal Number: 32*
 
 ### Proposed
+* [[PIP 33: Replicated subscriptions]]
 * [[PIP 32: Go Function API, Instance and LocalRun]]
 * [[PIP 31: Transaction Support]]
 * [[PIP 30: change authentication provider API to support mutual authentication]]

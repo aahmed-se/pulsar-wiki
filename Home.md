@@ -5,9 +5,10 @@
 
 We encourage to document any big change or feature or any addition to public user APIs through a design document to be discussed with the community.
 
-*Next Proposal Number: 32*
+*Next Proposal Number: 35*
 
 ### Proposed
+* [[PIP 34: Add new subscribe type Key_Failover]]
 * [[PIP 33: Replicated subscriptions]]
 * [[PIP 32: Go Function API, Instance and LocalRun]]
 * [[PIP 31: Transaction Support]]

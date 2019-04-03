@@ -12,13 +12,12 @@ We encourage to document any big change or feature or any addition to public use
 * [[PIP 33: Replicated subscriptions]]
 * [[PIP 32: Go Function API, Instance and LocalRun]]
 * [[PIP 31: Transaction Support]]
-* [[PIP 30: change authentication provider API to support mutual authentication]]
 * [[PIP 28: Pulsar Proxy Gateway Improvement]]
 * [[PIP 26: Delayed Message Delivery]]
 * [[PIP 21: Pulsar Edge Component]]
 
 ### Accepted
-
+* [[PIP 30: change authentication provider API to support mutual authentication]]
 * [[PIP 29: One package for both pulsar-client and pulsar-admin]]
 * [[PIP 27: Add checklist in github pull request template]]
 * [[PIP 25: Token based authentication]]

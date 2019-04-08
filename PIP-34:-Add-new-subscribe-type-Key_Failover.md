@@ -19,12 +19,13 @@ The main work is on the hash layer and the new dispatcher.
 As in the mail discussing, Any hash mechanism that can map a key to a
 consumer should work here.  We will make the hashing mechanism pluggable in this proposal.
 
+
 The hash value of message key determines the target consumer. The hash layer has the following requirements:
 1. Each consumer serves a fixed range of hash value.
 1. The whole range of hash value could be covered by all the consumers.
 1. Once a consumer is removed, the left consumers could still serve the whole range.
 
-In the dispatcher, broker could collect the dispatch rate for each consumer. 
+Here is an example hash method: In the dispatcher, broker could collect the dispatch rate for each consumer. 
 When a new consumer is added, we could choose the busiest consumer and split its hash range, and share a half of the hash range to the new consumer.
 When a consumer is closed, we could assign its hash range to adjacent consumer, which has less dispatch rate.
 

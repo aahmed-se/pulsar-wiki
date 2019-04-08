@@ -16,6 +16,8 @@ The main idea is to bring a hash routing layer in new Key_Failover dispatcher. E
 The main work is on the hash layer and the new dispatcher.
 
 ### Hash layer
+As in the mail discussing, Any hash mechanism that can map a key to a
+consumer should work here.  We will make the hashing mechanism pluggable in this proposal.
 
 The hash value of message key determines the target consumer. The hash layer has the following requirements:
 1. Each consumer serves a fixed range of hash value.
@@ -37,6 +39,9 @@ There are 3 kinds of blocks, each block represents one consumer. vertical axis r
 1. at time T4, C2 is closed, and its hash range is assigned to C3. C3 will serve the whole range(0--1).
 
 ### change in PulsarApi.proto
+Add a new sub type in CommandSubscribe.SubType. 
+Add a new field in MessageMetadata, which served for this feature only. By using a new Key, it could avoid impacting other features. e.g. user want to use original key for compact/partition-routing, while want to use a new key for the key ordering.
+ 
 ```
 message CommandSubscribe {
 	enum SubType {
@@ -45,6 +50,10 @@ message CommandSubscribe {
 		Failover  = 2;
 		Key_Failover = 3; // add new type here < ==
 	}
+
+message MessageMetadata {
+	...
+	optional string ordering_key = 18;
 ```
 
 ### add a new dispatcher in broker side.
